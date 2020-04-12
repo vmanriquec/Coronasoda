@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "28228711284",
+    "firebase_url": "https://coronasoda-c0198.firebaseio.com",
+    "project_id": "coronasoda-c0198",
+    "storage_bucket": "coronasoda-c0198.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28228711284:android:936771e67b32661dd2b221",
+        "android_client_info": {
+          "package_name": "com.llamasoda.coronasoda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28228711284-1hd1mn73gg3ca46c7j99r4lmkq4h44ab.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.llamasoda.coronasoda",
+            "certificate_hash": "416246f5b4764ed2c1d9fe49659254cc321d22b9"
+          }
+        },
+        {
+          "client_id": "28228711284-uqrkrqpev5jgcb2gb3ckch0s9fms37cm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU6L-eo8fdSi0LZ5udTS7-MaxdFAXC28Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28228711284-uqrkrqpev5jgcb2gb3ckch0s9fms37cm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

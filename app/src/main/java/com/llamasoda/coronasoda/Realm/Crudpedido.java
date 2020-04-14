@@ -12,7 +12,7 @@ public class Crudpedido {
 
 
 
-    private final static int calculateIndex(){
+    public final static int calculateIndex(){
         Realm realm = Realm.getDefaultInstance();
         Number currentIdNum = realm.where(PedidoRealm.class).max("idpedido");
         int nextId;

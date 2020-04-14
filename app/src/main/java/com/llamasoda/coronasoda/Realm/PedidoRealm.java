@@ -14,7 +14,7 @@ public class PedidoRealm  extends RealmObject {
     private Double totalpedido;
     private String estadopedido ;
     private String descripcionpedido;
-    private Date fechapedido;
+    private String fechapedido;
     private int idusuario;
     private int idalmacen;
     private String idfacebook ;
@@ -90,11 +90,11 @@ public class PedidoRealm  extends RealmObject {
         this.estadopedido = estadopedido;
     }
 
-    public Date getFechapedido() {
+    public String getFechapedido() {
         return fechapedido;
     }
 
-    public void setFechapedido(Date fechapedido) {
+    public void setFechapedido(String fechapedido) {
         this.fechapedido = fechapedido;
     }
 

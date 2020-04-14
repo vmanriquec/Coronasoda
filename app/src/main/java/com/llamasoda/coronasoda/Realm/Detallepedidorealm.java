@@ -5,9 +5,10 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Detallepedidorealm extends RealmObject {
-      @PrimaryKey
+       @PrimaryKey
     public int id;
-
+ public int ojo;
+ private String subtotal;
     private int idpedido;
     private int cantidadrealm;
     private Double precventarealm;
@@ -15,16 +16,36 @@ public class Detallepedidorealm extends RealmObject {
     private String imagenrealm;
     private int idalmacenrealm;
     private int idproductorealm;
-    private RealmList<ProductoRealm> productoRealms;
-    public Double getSubtotal() {
+private String comentarioacocina;
+
+    public String getComentarioacocina() {
+        return comentarioacocina;
+    }
+
+    public void setComentarioacocina(String comentarioacocina) {
+        this.comentarioacocina = comentarioacocina;
+    }
+
+    public String getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Double subtotal) {
+    public void setSubtotal(String subtotal) {
         this.subtotal = subtotal;
     }
 
-    private Double subtotal;
+
+
+
+    private RealmList<ProductoRealm> productoRealms;
+    public int getOjo() {
+        return ojo;
+    }
+
+    public void setOjo(int ojo) {
+        this.ojo = ojo;
+    }
+
     public int getIdpedido() {
         return idpedido;
     }

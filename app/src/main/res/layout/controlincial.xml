@@ -26,16 +26,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/usuarioactivo"
+                android:id="@+id/usuariocontrol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginLeft="5sp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
-                android:text="usuarioactivo" />
+                android:text="TextView" />
 
             <TextView
                 android:id="@+id/almacenactivo"

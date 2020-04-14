@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,7 +20,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.llamasoda.coronasoda.Realm.Crudpedido;
+import com.llamasoda.coronasoda.Realm.PedidoRealm;
 import com.llamasoda.coronasoda.modelo.Almacen;
+import com.llamasoda.coronasoda.modelo.Usuarios;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,24 +39,48 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class Login extends AppCompatActivity {
 String nombreusuario1;
 String claveusuario;
+int idusuario;
+    String FileName = "myfile";
+    SharedPreferences prefs;
 
+    ArrayList<Usuarios> peopleusuario = new ArrayList<>();
+    ArrayList<String> dataListusuario = new ArrayList<String>();
+
+
+
+    private String[] strArrDatausuario = {"No Suggestions"};
     private String[] strArrData = {"No Suggestions"};
-    String FileName ="myfile";
+
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
+    TextView nombreuser;
+    TextView clave;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
+        Realm.init(getApplicationContext());
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
+                .name("pedido.realm")
+                .schemaVersion(0)
+                .build();
+        Realm.setDefaultConfiguration(realmConfig);
 
-            final TextView nombreuser=(TextView) findViewById(R.id.phpnombreusuario);
-            final TextView claveusuario=(TextView) findViewById(R.id.phpclaveusuario);
-            final Spinner spinerio=(Spinner) findViewById(R.id.spinnerio);
+           nombreuser=(TextView) findViewById(R.id.phpnombreusuario);
+        clave=(TextView) findViewById(R.id.phpclaveusuario);
+        TextView  claveusuario=(TextView) findViewById(R.id.phpclaveusuario);
+             Spinner spinerio=(Spinner) findViewById(R.id.spinnerio);
         Button va=(Button) findViewById(R.id.phpbtnloginphp) ;
         new cargaralmacen().execute();
         va.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +126,7 @@ String claveusuario;
         @Override
         protected String doInBackground(String... params) {
             try {
-              url = new URL("https://www.sodapop.pe/sugest/apilogin.php");
+              url = new URL("https://www.sodapop.pe/sugest/apiloginnuevo.php");
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -176,60 +204,38 @@ String claveusuario;
         @Override
         protected void onPostExecute(String result) {
 
-            //this method will be running on UI thread
-
-            pdLoading.dismiss();
-
-            if(result.equalsIgnoreCase("true"))
-            {
-                /* Here launching another activity when login successful. If you persist login state
-                use sharedPreferences of Android. and logout button to clear sharedPreferences.
-                 */
 
 
-
-                final TextView nombreuser=(TextView) findViewById(R.id.phpnombreusuario);
-                final TextView claveusuario=(TextView) findViewById(R.id.phpclaveusuario);
-                final Spinner spinerio=(Spinner) findViewById(R.id.spinnerio);
-
-                if( nombreuser.getText().toString().length() == 0 || claveusuario.getText().toString().length() == 0 ){
-                    nombreuser.setError( "Debes digitar un nombre y clave de usuario" );
-
-                }
-                else {
-                    if (nombreuser.getText().toString().length() == 0) {
-                        nombreuser.setError("Debes digitar un nombre usuario");
-
-                    } else {
-                        if (claveusuario.getText().toString().length() == 0) {
-                            claveusuario.setError("Debes digitar su clave");
-
-                        } else {
-
-                            String al = spinerio.getItemAtPosition(spinerio.getSelectedItemPosition()).toString();
-                            String mesei = al;
-                            String mesi = mesei.substring(0, 2);
-                            String mei = mesi.trim();
+            peopleusuario.clear();
+            Usuarios mesousuarios;
+            if (result.equals("no rows")) {
 
 
-                            guardarsharesinfacebook(nombreuser.getText().toString(), claveusuario.getText().toString());
+            }
 
-                            ir();
-
-                        }
-
+            else {
+                try {
+                    JSONArray jArray = new JSONArray(result);
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject json_data = jArray.optJSONObject(i);
+ mesousuarios = new Usuarios(json_data.getInt("idusuario"), json_data.getString("nombreusuario"), json_data.getString("claveusuario"), json_data.getInt("idalmacen"), json_data.getString("imagen"), json_data.getString("idfacebook"),json_data.getString("nombrefacebook"));
+                        peopleusuario.add(mesousuarios);
+                        idusuario=mesousuarios.getIdusuario();
                     }
+                    strArrDatausuario = dataListusuario.toArray(new String[dataListusuario.size()]);
+                    guardarsharesinfacebook(nombreuser.getText().toString(), clave.getText().toString(),idusuario);
 
+                    ir();
+                    pdLoading.dismiss();
                 }
 
-            }else if (result.equalsIgnoreCase("false")){
 
-                // If username and password does not match display a error message
-                Toast.makeText(Login.this, "no estas autorizado a hacer operaciones en este almacen", Toast.LENGTH_LONG).show();
-
-            } else if (result.equalsIgnoreCase("exception") || result.equalsIgnoreCase("unsuccessful")) {
-
-                Toast.makeText(Login.this, "OOPs! hay problemas de conexion...", Toast.LENGTH_LONG).show();
+                catch (JSONException e)
+                {
+                    Log.d("erroro",e.toString());
+                    Toast.makeText(Login.this, "Upss! no estas registrado.", Toast.LENGTH_LONG).show();
+                    pdLoading.dismiss();
+                }
 
             }
         }
@@ -336,7 +342,7 @@ String claveusuario;
         }
 
     }
-    private  void guardarsharesinfacebook(String nombreusuario,String claveusuario){
+    public   void guardarsharesinfacebook(String nombreusuario,String claveusuario,int idusuario){
         SharedPreferences sharedPreferences =getSharedPreferences(FileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         Spinner s=(Spinner)findViewById(R.id.spinnerio);
@@ -355,12 +361,41 @@ String claveusuario;
         editor.putString("almacenactivosf",almacenactivosf);
         editor.putString("idalmacenactivosf",idalmacenactivosf);
         editor.putString("editandopedidof","no");
+        editor.putString("idusuario",String.valueOf(idusuario));
 
         editor.commit();
 
     }
     private void ir(){
-        Intent i= new Intent(this,intentIniciodeldia.class);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDateandTime = sdf.format(new Date());
+        prefs = getApplicationContext().getSharedPreferences(FileName, Context.MODE_PRIVATE);
+        String usuarior=prefs.getString("nombreusuariof","");
+        String almacennombre=prefs.getString("almacenactivosf","");
+       String idalmacen=prefs.getString("idalmacenactivosf","");
+        String usuariostring   =prefs.getString("idusuario","");
+
+        crearpedidoinicial(Integer.parseInt(usuariostring),0.0,currentDateandTime,Integer.parseInt(idalmacen));
+
+
+        Intent i= new Intent(this,Menutab.class);
         startActivity(i);
+    }
+    public final static void crearpedidoinicial(int idusuario,Double totalpedido,String fechapedido,int idalmacen){
+
+
+        Realm pedido = Realm.getDefaultInstance();
+        pedido.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm pedido) {
+                int index = Crudpedido.calculateIndex();
+                PedidoRealm realmDetallepedidorealm = pedido.createObject(PedidoRealm.class, index);
+                realmDetallepedidorealm.setIdusuario(idusuario);
+                realmDetallepedidorealm.setTotalpedido(0.0);
+                realmDetallepedidorealm.setFechapedido(fechapedido);
+                realmDetallepedidorealm.setIdalmacen(idalmacen);
+            }
+        });
     }
 }

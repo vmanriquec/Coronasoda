@@ -24,8 +24,8 @@
 
     <LinearLayout
         android:id="@+id/my_layout"
-        android:layout_width="330dp"
-        android:layout_height="514dp"
+        android:layout_width="342dp"
+        android:layout_height="505dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editText2e"
         android:layout_width="402dp"
         android:layout_height="41dp"
         android:background="@drawable/button_background"
@@ -106,32 +106,41 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <LinearLayout
-        android:layout_width="412dp"
+        android:layout_width="410dp"
         android:layout_height="35dp"
-        android:background="@drawable/login_button_bk"
+        android:background="@color/semiTransparentWhite"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2"
-        app:layout_constraintVertical_bias="0.9">
+        app:layout_constraintTop_toBottomOf="@+id/editText2e">
 
         <Button
-            android:id="@+id/button6"
-            android:layout_width="229dp"
+            android:id="@+id/acanasta"
+            android:layout_width="259dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/semiTransparentWhite"
-            android:text="AGREGAR A CANASTA"
+            android:background="@drawable/blue_leftcorner_bkg"
+            android:text="LISTO!  A LA CANASTA"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/totalapagar"
-            android:layout_width="45dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="1"
-            android:text="s/."
+            android:text="S/."
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/totalapagar"
+            android:layout_width="62dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
             android:textSize="24sp"
             android:textStyle="bold" />
     </LinearLayout>

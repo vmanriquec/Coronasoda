@@ -1,5 +1,6 @@
 package com.llamasoda.coronasoda;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.llamasoda.coronasoda.Realm.Crudpedido;
+import com.llamasoda.coronasoda.Realm.PedidoRealm;
 import com.llamasoda.coronasoda.adapter.Adaptadorproductos;
 import com.llamasoda.coronasoda.modelo.Productos;
 
@@ -38,6 +41,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 import static com.llamasoda.coronasoda.Login.CONNECTION_TIMEOUT;
 import static com.llamasoda.coronasoda.Login.READ_TIMEOUT;
 
@@ -48,6 +54,7 @@ View view;
     String session, nombreususrio, almacenactivo, idalmacenactivo;
     String FileName = "myfile";
     SharedPreferences prefs;
+
     private String[] strArrData = {"No Suggestions"};
     private String[] strArrDataventas = {"No Suggestions"};
     private String[] strArrDataproducto = {"No Suggestions"};
@@ -68,15 +75,41 @@ View view;
 
 
     }
-
+    String idalmacen;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          view=inflater.inflate(R.layout.pimerfragmendemenu , container, false);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Realm.init(getContext());
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
+                .name("pedido.realm")
+                .schemaVersion(0)
+                .build();
+        Realm.setDefaultConfiguration(realmConfig);
+
         TextView fechadehoy = (TextView) view.findViewById(R.id.fechaactual);
+        TextView usuariotxt=(TextView) view.findViewById(R.id.usuarioactivocontrol);
+        TextView almacentxt=(TextView) view.findViewById(R.id.almacenactivo);
+
+
+        prefs = getActivity().getSharedPreferences(FileName, Context.MODE_PRIVATE);
+        String usuarior=prefs.getString("nombreusuariof","");
+        String almacennombre=prefs.getString("almacenactivosf","");
+        idalmacen=prefs.getString("idalmacenactivosf","");
+        String usuariostring   =prefs.getString("idusuario","");
+
+     usuariotxt.setText(usuarior);
+     almacentxt.setText(almacennombre);
+
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDateandTime = sdf.format(new Date());
         fechadehoy.setText(currentDateandTime);
-        TextView almacen = (TextView) view.findViewById(R.id.almacenactivo);
+
+
+
+
         ListView lista=(ListView) view.findViewById(R.id.listainicio);
         recyclerproducto=(RecyclerView) view.findViewById(R.id.recyclerlistado);
 
@@ -97,7 +130,7 @@ startASycnc();
 
 
     public void startASycnc() {
-        new traerproductos().execute("1");
+        new traerproductos().execute(idalmacen);
     }
 
     private class traerproductos extends AsyncTask<String, String, String> {
@@ -204,5 +237,7 @@ startASycnc();
             }
         }
     }
+
+
 
 }

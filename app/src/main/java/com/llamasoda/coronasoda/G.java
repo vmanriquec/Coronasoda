@@ -3,8 +3,9 @@ package com.llamasoda.coronasoda;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,7 +24,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.core.ThreadInitializer;
 import com.llamasoda.coronasoda.Realm.Crudetallepedido;
 import com.llamasoda.coronasoda.modelo.Adicional;
 import com.llamasoda.coronasoda.modelo.Crema;
@@ -42,15 +42,15 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import io.realm.Realm;
+
 import com.llamasoda.coronasoda.Realm.*;
-import com.llamasoda.coronasoda.modelo.Detallepedido;
 
 import io.realm.RealmConfiguration;
 import static com.llamasoda.coronasoda.Login.CONNECTION_TIMEOUT;
@@ -61,14 +61,12 @@ public class G extends AppCompatActivity {
     String idproductoseleccionado;
     TextView totalapagar;
 int idsupremodedetalle;
-
+int idusuario;
+    String FileName = "myfile";
+    SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
         Realm.init(getApplication());
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
                 .name("pedido.realm")
@@ -77,14 +75,22 @@ int idsupremodedetalle;
         Realm.setDefaultConfiguration(realmConfig);
         setContentView(R.layout.activity_g);
         totalapagar=(TextView)findViewById(R.id.totalapagar);
+
+
+
+
         //datos desde atras
+        prefs = getApplicationContext().getSharedPreferences(FileName, Context.MODE_PRIVATE);
+String usuariostring   =prefs.getString("idusuario","");
+String idalamce=prefs.getString("idalmacenactivosf","");
+        idusuario=Integer.parseInt(usuariostring);
         Intent myIntent = getIntent();
         String nombredeproductoseleccionado = myIntent.getStringExtra("nombredeproductoseleccionado"); // will return "FirstKeyValue"
         String preciodeproductoseleccionado= myIntent.getStringExtra("preciodeproductoseleccionado"); // will return "SecondKeyValue"
  idproductoseleccionado= myIntent.getStringExtra("idproductoseleccionado"); // will return "SecondKeyValue"
 
 
-        realmgrbarenbasedatosdetallepedido(Integer.parseInt(idproductoseleccionado),1,nombredeproductoseleccionado,Double.parseDouble(preciodeproductoseleccionado),1,0.0);
+        realmgrbarenbasedatosdetallepedido(Integer.parseInt(idproductoseleccionado),1,nombredeproductoseleccionado,Double.parseDouble(preciodeproductoseleccionado),1,preciodeproductoseleccionado,"no hay comentarios");
       idsupremodedetalle=Crudetallepedido.calculateIndex();
         Animation a = AnimationUtils.loadAnimation(getApplication(), R.anim.dechicoagrande);
         a.reset();
@@ -92,15 +98,44 @@ int idsupremodedetalle;
 
         TextView cabecera=(TextView) findViewById(R.id.cabeceralayoutadicional);
         TextView cantidadapedir=(TextView) findViewById(R.id.cantidadapedir);
+        TextView comentarioacocina=(TextView) findViewById(R.id.editText2e);
 
         Button mas=(Button) findViewById(R.id.botonmas) ;
         Button menos=(Button) findViewById(R.id.botonmenos) ;
+        Button acanasta=(Button)findViewById(R.id.acanasta);
+
         cabecera.setText(nombredeproductoseleccionado);
         cantidadapedir.setText("1");
         totalapagar.setText(String.valueOf(preciodeproductoseleccionado));
 
         totalapagar.clearAnimation();
         totalapagar.startAnimation(a);
+
+
+
+
+
+        acanasta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplication(),"se cargara el pedido" ,Toast.LENGTH_LONG).show();
+                String come=comentarioacocina.getText().toString();
+
+                TextView almacenactivo=(TextView) findViewById(R.id.almacenactivo);
+                TextView usuario=(TextView)findViewById(R.id.usuarioactivocontrol);
+                if (come==""){
+                    come="no hay comentarios";
+                    }else {
+                    actualizarcomentarioparacadaproducto(idsupremodedetalle, come);
+                    }
+
+               actualizartotalenpedido();
+
+
+                Intent i= new Intent(getApplicationContext(),Menutab.class);
+                startActivity(i);
+            }
+        });
 
         mas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +151,7 @@ int idsupremodedetalle;
                     totalapagar.setText(String.valueOf(totalitoinicial));
                     totalapagar.clearAnimation();
                     totalapagar.startAnimation(a);
-
+                    Masactualizarcantidadendetallemas(idsupremodedetalle,c,String.valueOf(totalitoinicial));
                 }
             }
         });
@@ -134,8 +169,10 @@ int idsupremodedetalle;
                     totalapagar.setText(String.valueOf(totalitoinicial));
                     totalapagar.clearAnimation();
                     totalapagar.startAnimation(a);
+                    Masactualizarcantidadendetallemas(idsupremodedetalle,c,String.valueOf(totalitoinicial));
 
-                }            }
+                }
+            }
         });
 
         new traeradicional().execute(idproductoseleccionado);
@@ -271,7 +308,6 @@ int idsupremodedetalle;
                                     realmgrabaradicional( q,l,Integer.parseInt(idproductoseleccionado));
 
 
-
                                     TextView totalapaga=(TextView)findViewById(R.id.totalapagar);
                                     TextView cantidadapedir=(TextView)findViewById(R.id.cantidadapedir);
                                     String ct=cantidadapedir.getText().toString();
@@ -284,10 +320,11 @@ int idsupremodedetalle;
                                     totalapagar.clearAnimation();
                                     totalapagar.startAnimation(a);
 
+                                    Masactualizarsubtotaldetallemas( idsupremodedetalle,String.valueOf(totalitoinicial));
+
                                 } else {
                                     TextView cantidadapedir=(TextView)findViewById(R.id.cantidadapedir);
                                     String ct=cantidadapedir.getText().toString();
-
                                     TextView totalapaga=(TextView)findViewById(R.id.totalapagar);
                                     String vad=totalapaga.getText().toString();
                                     Double totalitoinicial=Double.parseDouble(vad);
@@ -295,10 +332,8 @@ int idsupremodedetalle;
                                     totalapagar.setText(String.valueOf(totalitoinicial));
                                     totalapagar.clearAnimation();
                                     totalapagar.startAnimation(a);
-
-
-
-                                    eliminaradicional(idsupremodedetalle,Integer.parseInt(idproductoseleccionado),q);
+                                    Masactualizarsubtotaldetallemas( idsupremodedetalle,String.valueOf(totalitoinicial));
+                 eliminaradicional(idsupremodedetalle,Integer.parseInt(idproductoseleccionado),q);
                                 }
                             }});
 
@@ -419,6 +454,8 @@ int idsupremodedetalle;
                         mesocrema = new Crema(json_data.getInt("idcrema"), json_data.getString("nombrecrema"),  json_data.getString("estadocrema"));
                         peoplecrema.add(mesocrema);
                     }
+
+
                     LinearLayout my_layout = (LinearLayout)findViewById(R.id.my_layout);
                     strcrema = datalistcrema.toArray(new String[datalistcrema.size()]);
                     TextView texto = new TextView(getApplication());
@@ -432,14 +469,24 @@ int idsupremodedetalle;
                     texto.setShadowLayer(2, 1, 1, R.color.accent);
                     texto.setTextColor(getApplication().getResources().getColor(R.color.colortres));
 
+
                     TableRow.LayoutParams textoenlayout = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
                     my_layout.addView(texto, textoenlayout);
 
                     int numerodecrema;
+
+
+
                     for(numerodecrema= 0; numerodecrema < peoplecrema.size(); numerodecrema++) {
                         CheckBox cbc = new CheckBox(getApplication());
                         cbc.setText("   "+peoplecrema.get(numerodecrema).getNombrecrema());
                         cbc.setId(numerodecrema+1);
+
+
+
+                        int idcremita=peoplecrema.get(numerodecrema).getIdcrema();
+                        String nombrecremita=peoplecrema.get(numerodecrema).getNombrecrema();
+
 
                         cbc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
@@ -449,10 +496,11 @@ int idsupremodedetalle;
                                 CharSequence options[];
 
                                 if (isChecked) {
-
+realgrabarcrema(nombrecremita,Integer.parseInt(idproductoseleccionado));
                                     Toast.makeText(getApplicationContext(),"esta activo"+String.valueOf(cbc.getId()),Toast.LENGTH_LONG).show();
 
                                 } else {
+                                    eliminaracrema(idsupremodedetalle,Integer.parseInt(idproductoseleccionado),nombrecremita);
                                     Toast.makeText(getApplicationContext(),"esta desactivadazooooooo"+String.valueOf(cbc.getId())+"entotal hay"+String.valueOf(numerodeadiciones),Toast.LENGTH_LONG).show();
                                 }
                             }});
@@ -491,19 +539,23 @@ int idsupremodedetalle;
 
 
 
-    public  static void realmgrbarenbasedatosdetallepedido(final int idproducto,int cantidad,String nombre,Double precio,int idpedido,Double subtotal) {
+    public  static void realmgrbarenbasedatosdetallepedido(final int idproducto,int cantidad,String nombre,Double precio,int idpedido,String subtotal,String comentariococina) {
         Realm pedido = Realm.getDefaultInstance();
         pedido.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm pedido) {
                 int index = Crudetallepedido.calculateIndex();
+                int intindexpedido= (Crudpedido.calculateIndex()-1);
                 Detallepedidorealm realmDetallepedidorealm = pedido.createObject(Detallepedidorealm.class, index);
                 realmDetallepedidorealm.setIdproductorealm(idproducto);
                 realmDetallepedidorealm.setCantidadrealm(cantidad);
                 realmDetallepedidorealm.setNombreproductorealm(nombre);
                 realmDetallepedidorealm.setPrecventarealm(precio);
-                //realmDetallepedidorealm.setIdpedido(index);
                 realmDetallepedidorealm.setSubtotal(subtotal);
+                realmDetallepedidorealm.setComentarioacocina(comentariococina);
+                realmDetallepedidorealm.setIdpedido(intindexpedido);
+                //realmDetallepedidorealm.setIdpedido(index);
+
             }
 
         });
@@ -519,13 +571,11 @@ int idsupremodedetalle;
                 int index = CrudadicionalRealm.calculateIndex();
                 int iddedetalle=Crudetallepedido.calculateIndex();
                 AdicionalRealm AdicionalRealm = pedido.createObject(AdicionalRealm.class, index);
-
                 AdicionalRealm.setId(iddedetalle-1);
                 AdicionalRealm.setIdproducto(idproducto);
                 AdicionalRealm.setNombreadicional(nombreadicional);
                 AdicionalRealm.setPrecioadicional(precioadicional);
                 AdicionalRealm.setEstadoadicional("1");
-
             }
         });
         Log.d("TAG", "se creara por primera vez el detalle");
@@ -549,6 +599,7 @@ int idsupremodedetalle;
         Log.d("TAG", "se creara por primera vez el detalle");
 
     }
+
     public final static List<AdicionalRealm> eliminaradicional(int ido,int idproducto,String nombreadicional) {
         Realm pedido = Realm.getDefaultInstance();
 int y=ido-1;
@@ -564,40 +615,197 @@ int y=ido-1;
         pedido.commitTransaction();
 
 
+
         return results;
     }
 
-    public final static List<CremaRealm> eliminarcrema(String ido,int idproducto) {
-        Realm realm = Realm.getDefaultInstance();
-        //int iddedetalle=Crudetallepedido.calculateIndex();
-        RealmResults<CremaRealm> AdicionalRealmo = realm.where(CremaRealm.class).equalTo("id", ido).equalTo("idproducto", idproducto).findAll();
-        AdicionalRealmo.deleteFirstFromRealm();
-
-        realm.commitTransaction();
-
-        return AdicionalRealmo;
-    }
-    public  static void elimina(int ido,int idproducto) {
-        Realm pedidoo = Realm.getDefaultInstance();
-        pedidoo.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm pedidoo) {
-
-                Objects.requireNonNull(pedidoo.where(AdicionalRealm.class).
-                        equalTo("id", ido)
+    public final static List<CremaRealm> eliminaracrema(int ido,int idproducto,String nombrecrema) {
+        Realm pedido = Realm.getDefaultInstance();
+        int y=ido-1;
+        RealmResults<CremaRealm> results =
+                pedido.where(CremaRealm.class).
+                        equalTo("id", y)
                         .equalTo("idproducto", idproducto)
-                        .findFirst());
+                        .equalTo("nombrecrema",nombrecrema)
+                        .findAll();
+        results.toString().trim();
+        pedido.beginTransaction();
+        results.deleteFirstFromRealm();     // App crash
+        pedido.commitTransaction();
+        return results;
+    }
+
+    public final static void Masactualizarsubtotaldetallemas(int id,String subtotal){
+        int tu= id-1;
+        Realm pedido = Realm.getDefaultInstance();
+        pedido.beginTransaction();
 
 
+        Detallepedidorealm pedidoRealm = pedido.where(Detallepedidorealm.class)
+
+                .equalTo("id", tu)
+                .findFirst();
+
+       String r= pedidoRealm.toString().trim();
+                pedidoRealm.setSubtotal(subtotal);
+        pedido.insertOrUpdate(pedidoRealm);
+        pedido.commitTransaction();
 
 
-
-
-            }
-        });
-        Log.d("TAG", "se creara por primera vez el detalle");
 
     }
+
+    public final static void actualizartotalenpedido(){
+        String pp=sumarsubtotalesparacolocarenpedido();
+        Realm pedido = Realm.getDefaultInstance();
+        pedido.beginTransaction();
+int tu=Crudpedido.calculateIndex()-1;
+        PedidoRealm pedidoRealm = pedido.where(PedidoRealm.class)
+                .equalTo("idpedido", tu)
+                .findFirst();
+      pedidoRealm.setTotalpedido(Double.parseDouble(pp));
+        pedido.insertOrUpdate(pedidoRealm);
+        pedido.commitTransaction();
+
+
+
+    }
+
+    public final static void Masactualizarcantidadendetallemas(int id,int cantidad,String  subtotal){
+        int tu= id-1;
+        Realm pedido = Realm.getDefaultInstance();
+        pedido.beginTransaction();
+
+
+        Detallepedidorealm pedidoRealm = pedido.where(Detallepedidorealm.class)
+
+                .equalTo("id", tu)
+                .findFirst();
+
+        String r= pedidoRealm.toString().trim();
+        pedidoRealm.setCantidadrealm(cantidad);
+        pedidoRealm.setSubtotal(subtotal);
+
+        pedido.insertOrUpdate(pedidoRealm);
+        pedido.commitTransaction();    }
+
+    public final static void actualizarcomentarioparacadaproducto(int id,String comentario){
+        int tu= id-1;
+        Realm pedido = Realm.getDefaultInstance();
+        pedido.beginTransaction();
+
+
+        Detallepedidorealm pedidoRealm = pedido.where(Detallepedidorealm.class)
+
+                .equalTo("id", tu)
+                .findFirst();
+
+        String r= pedidoRealm.toString().trim();
+        pedidoRealm.setComentarioacocina(comentario);
+        pedido.insertOrUpdate(pedidoRealm);
+        pedido.commitTransaction();    }
+
+
+    public final static String sumarsubtotalesparacolocarenpedido(){
+        int tu=Crudpedido.calculateIndex()-1;
+String sum;
+        Realm pedido = Realm.getDefaultInstance();
+        pedido.beginTransaction();
+        RealmResults<Detallepedidorealm> results = pedido.where(Detallepedidorealm.class).equalTo("idpedido",tu).findAll();
+        int w = results.size();
+Double zz,ll=0.0;
+        for (int i = 0; i < w; i++){
+            zz= Double.parseDouble(results.get(i).getSubtotal());
+            ll=ll+zz;
+        }
+        sum = String.valueOf(ll);
+        pedido.commitTransaction();
+        return sum;
+    }
+
+
+
+
+
+    public final static List<CremaRealm> eliminaraTotalcrema(int ido) {
+        Realm pedido = Realm.getDefaultInstance();
+        int y=ido-1;
+        RealmResults<CremaRealm> results =
+                pedido.where(CremaRealm.class).
+                        equalTo("id", y)
+                        .findAll();
+        results.toString().trim();
+        pedido.beginTransaction();
+        results.deleteAllFromRealm() ;
+        pedido.commitTransaction();
+        return results;
+    }
+
+    public final static List<AdicionalRealm> eliminarTotaladicional(int ido) {
+        Realm pedido = Realm.getDefaultInstance();
+        int y=ido-1;
+        RealmResults<AdicionalRealm> results =
+                pedido.where(AdicionalRealm.class).
+                        equalTo("id", y)
+                        .findAll();
+        results.toString().trim();
+        pedido.beginTransaction();
+        results.deleteAllFromRealm();     // App crash
+        pedido.commitTransaction();
+        return results;
+    }
+
+    public final static List<Detallepedidorealm> eliminarTOTALdetallepedido(int ido) {
+        Realm pedido = Realm.getDefaultInstance();
+        int y=ido-1;
+        RealmResults<Detallepedidorealm> results =
+                pedido.where(Detallepedidorealm.class).
+                        equalTo("id", y)
+                        .findAll();
+        results.toString().trim();
+        pedido.beginTransaction();
+        results.deleteAllFromRealm();     // App crash
+        pedido.commitTransaction();
+        return results;
+    }
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+//        Toast.makeText(getApplication(),"estas onresume",Toast.LENGTH_LONG).show();
+
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+  //      Toast.makeText(getApplication(),"onstop  ",Toast.LENGTH_LONG).show();
+
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+    //    Toast.makeText(getApplication(),"onpause full",Toast.LENGTH_LONG).show();
+      //int yi=idsupremodedetalle;
+        //eliminaraTotalcrema(yi);
+        //eliminarTotaladicional(yi);
+        //eliminarTOTALdetallepedido(yi);
+
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+      // Toast.makeText(getApplication(),"on detroy full",Toast.LENGTH_LONG).show();
+  //      int yi=idsupremodedetalle;
+    //    eliminaraTotalcrema(yi);
+      //  eliminarTotaladicional(yi);
+        //eliminarTOTALdetallepedido(yi);
+
+
+    }
+
+
+
 
 }
 

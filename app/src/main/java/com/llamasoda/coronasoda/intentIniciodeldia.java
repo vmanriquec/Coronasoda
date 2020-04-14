@@ -95,7 +95,7 @@ public class intentIniciodeldia extends AppCompatActivity {
 
 
         TextView fechadehoy = (TextView) findViewById(R.id.fechaactual);
-        TextView usuario = (TextView) findViewById(R.id.usuarioactivo);
+        TextView usuario = (TextView) findViewById(R.id.usuariocontrol);
 
         TextView almacen = (TextView) findViewById(R.id.almacenactivo);
         ListView lista=(ListView) findViewById(R.id.listainicio);
@@ -349,7 +349,8 @@ private void addFragment(Fragment fragment){
                     JSONArray jArray = new JSONArray(result);
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject json_data1 = jArray.optJSONObject(i);
-                        meso1 = new Usuarios(json_data1.getInt("idusuario"), json_data1.getString("nombreusuario"), "", "", "");
+                        meso1 = new Usuarios(json_data1.getInt("idusuario"), json_data1.getString("nombreusuario"), json_data1.getString("claveusuario"), json_data1.getInt("idalmacen"), json_data1.getString("imagen"), json_data1.getString("idfacebook"),json_data1.getString("nombrefacebook"));
+
                         people.add(meso1);
                     }
                     strArrData = dataListo.toArray(new String[dataListo.size()]);
@@ -444,7 +445,8 @@ private void addFragment(Fragment fragment){
                     JSONArray jArray = new JSONArray(result2);
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject json_data2 = jArray.optJSONObject(i);
-                        meso2 = new Usuarios(json_data2.getInt("idusuario"), json_data2.getString("nombreusuario"), "", "", "");
+                        meso2 = new Usuarios(json_data2.getInt("idusuario"), json_data2.getString("nombreusuario"), json_data2.getString("claveusuario"), json_data2.getInt("idalmacen"), json_data2.getString("imagen"), json_data2.getString("idfacebook"),json_data2.getString("nombrefacebook"));
+
                         people2.add(meso2);
                     }
                     strArrDatarecibe = dataList2.toArray(new String[dataList2.size()]);

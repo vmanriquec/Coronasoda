@@ -5,16 +5,19 @@ package com.llamasoda.coronasoda.modelo;
  * Created by Perseo on 04/08/2014.
  */
 public class Usuarios {
-    private String nombreusuario,claveusuario,almacenusuario,imagen;
-private int idusuario;
-    public Usuarios(int idusuario, String nombreusuario, String claveusuario, String almacenusuario , String imagen)
+    private String nombreusuario,claveusuario,imagen,idfacebook,nombrefacebook;
+private int idusuario,idalmacen;
+
+    public Usuarios(int idusuario, String nombreusuario, String claveusuario, int idalmacen , String imagen,String idfacebook,String nombrefacebook)
     {
         super();
         this.idusuario=idusuario;
         this.nombreusuario=nombreusuario;
         this.claveusuario=claveusuario;
-        this.almacenusuario=almacenusuario;
+        this.idalmacen=idalmacen;
         this.imagen=imagen;
+        this.idfacebook=idfacebook;
+        this.nombrefacebook=nombrefacebook;
     }
 
     public int getIdusuario() {
@@ -46,12 +49,12 @@ private int idusuario;
     }
 
 
-    public String getAlmacenusuario() {
-        return almacenusuario;
+    public int getIdalmacen() {
+        return idalmacen;
     }
 
-    public void setAlmacenusuario(String almacenusuario) {
-        this.almacenusuario = almacenusuario;
+    public void setIdalmacen(int idalmacen) {
+        this.idalmacen = idalmacen;
     }
 
 
@@ -68,4 +71,19 @@ private int idusuario;
         return this.nombreusuario;
     }
 
+    public String getIdfacebook() {
+        return idfacebook;
+    }
+
+    public void setIdfacebook(String idfacebook) {
+        this.idfacebook = idfacebook;
+    }
+
+    public String getNombrefacebook() {
+        return nombrefacebook;
+    }
+
+    public void setNombrefacebook(String nombrefacebook) {
+        this.nombrefacebook = nombrefacebook;
+    }
 }

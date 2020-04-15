@@ -531,14 +531,6 @@ realgrabarcrema(nombrecremita,Integer.parseInt(idproductoseleccionado));
     }
 
 
-
-
-
-
-
-
-
-
     public  static void realmgrbarenbasedatosdetallepedido(final int idproducto,int cantidad,String nombre,Double precio,int idpedido,String subtotal,String comentariococina) {
         Realm pedido = Realm.getDefaultInstance();
         pedido.executeTransaction(new Realm.Transaction() {

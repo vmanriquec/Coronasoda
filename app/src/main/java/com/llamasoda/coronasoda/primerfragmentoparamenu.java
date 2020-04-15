@@ -1,7 +1,12 @@
 package com.llamasoda.coronasoda;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,18 +14,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.llamasoda.coronasoda.Realm.CremaRealm;
 import com.llamasoda.coronasoda.Realm.Crudpedido;
+import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
 import com.llamasoda.coronasoda.Realm.PedidoRealm;
+import com.llamasoda.coronasoda.adapter.Adaptadordialogo;
 import com.llamasoda.coronasoda.adapter.Adaptadorproductos;
+import com.llamasoda.coronasoda.modelo.Crema;
+import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
+import com.llamasoda.coronasoda.modelo.Detallepedido;
 import com.llamasoda.coronasoda.modelo.Productos;
 
 import org.json.JSONArray;
@@ -40,17 +57,21 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.llamasoda.coronasoda.Login.CONNECTION_TIMEOUT;
 import static com.llamasoda.coronasoda.Login.READ_TIMEOUT;
 
 //import android.support.v4.app.Fragment;
 
 public class primerfragmentoparamenu extends Fragment {
-View view;
+    private static final String TITLE = "pedidos aaaaaaaaaa" ;
+    View view;
     String session, nombreususrio, almacenactivo, idalmacenactivo;
     String FileName = "myfile";
     SharedPreferences prefs;
@@ -70,7 +91,12 @@ View view;
     Productos mesoproducto;
     private RecyclerView recyclerproducto;
     ArrayList<Productos> peopleproducto = new ArrayList<>();
-  public static primerfragmentoparamenu newInstance() {
+
+
+    String[] strArrDataventaso = {"No Suggestions"};
+    ArrayList<String> dataListventitas = new ArrayList<String>();
+
+    public static primerfragmentoparamenu newInstance() {
         return new primerfragmentoparamenu();
 
 
@@ -90,7 +116,9 @@ View view;
         TextView fechadehoy = (TextView) view.findViewById(R.id.fechaactual);
         TextView usuariotxt=(TextView) view.findViewById(R.id.usuarioactivocontrol);
         TextView almacentxt=(TextView) view.findViewById(R.id.almacenactivo);
-
+        TextView botonlisto=(TextView) view.findViewById(R.id.botonlisto);
+        TextView tot=(TextView) view.findViewById(R.id.montototalenfragment);
+        TextView cantidadfragment=(TextView) view.findViewById(R.id.textoensegundofragment);
 
         prefs = getActivity().getSharedPreferences(FileName, Context.MODE_PRIVATE);
         String usuarior=prefs.getString("nombreusuariof","");
@@ -107,9 +135,6 @@ View view;
         String currentDateandTime = sdf.format(new Date());
         fechadehoy.setText(currentDateandTime);
 
-
-
-
         ListView lista=(ListView) view.findViewById(R.id.listainicio);
         recyclerproducto=(RecyclerView) view.findViewById(R.id.recyclerlistado);
 
@@ -122,13 +147,72 @@ View view;
         recyclerproducto.setLayoutManager(lManager);
 
 startASycnc();
+        Realm pedido = Realm.getDefaultInstance();
+        RealmResults<Detallepedidorealm> results =
+                pedido.where(Detallepedidorealm.class)
+                        .findAll();
+        int w = results.size();
+        cantidadfragment.setText(String.valueOf(w));
+        Double tt=0.0;
+        for (int i = 0; i < w; i++){
+            int gg=results.get(i).getCantidadrealm();
+            int  popo=results.get(i).getIdpedido();
+            String lll=results.get(i).getNombreproductorealm();
+            Double jjj=Double.parseDouble(results.get(i).getSubtotal());
+            tt=tt+jjj;
 
+        }
+       tot.setText("S/. "+String.valueOf(tt));
+        botonlisto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                 View view = inflater.inflate(R.layout.dialogoinformedepedidobarradialog, null);
+                    Button cobtinuar=(Button) view.findViewById(R.id.botondialogcontinuar);
+                    Button cancelar=(Button) view.findViewById(R.id.botondialogocancelar);
+                TextView numerodepedidostxt=(TextView) view.findViewById(R.id.textView4);
+                TextView montototalendoalogo=(TextView) view.findViewById(R.id.montototalito);
+                RecyclerView gggg  = (RecyclerView) view.findViewById(R.id.recydedialogo);
 
+                ArrayList<Datostarjetadialogo> peopleventas = new ArrayList<>();
+                peopleventas.clear();
+                ArrayList<Datostarjetadialogo> datosdetodaslastarjetas = new ArrayList<>();
+                ArrayList<String> datalisttarjeta = new ArrayList<String>();
+                String[] strtarjeta = {"No Suggestions"};
+                datosdetodaslastarjetas.clear();
+                Realm pedido = Realm.getDefaultInstance();
+                RealmResults<Detallepedidorealm> results =
+                        pedido.where(Detallepedidorealm.class)
+                                .findAll();
+                int w = results.size();
+                numerodepedidostxt.setText(String.valueOf(w));
+                Double tt=0.0;
+                for (int i = 0; i < w; i++){
+                    int gg=results.get(i).getCantidadrealm();
+                    int  popo=results.get(i).getIdpedido();
+                    String lll=results.get(i).getNombreproductorealm();
+                    Double jjj=Double.parseDouble(results.get(i).getSubtotal());
+                    tt=tt+jjj;
+                    Datostarjetadialogo datoso =new Datostarjetadialogo(popo,gg,lll,jjj);
+                    peopleventas.add(datoso);
+                }
+             montototalendoalogo.setText("S/. "+String.valueOf(tt));
 
-        return view;
+                strArrDataventaso = dataListventitas.toArray(new String[dataListventitas.size()]);
+                RecyclerView.Adapter  adapterventas = new Adaptadordialogo(peopleventas,getActivity());
+                gggg.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+                gggg.setAdapter(adapterventas);
+                    builder.setView(view);
+                    Dialog dialog = builder.create();
+                    dialog.getWindow().setBackgroundDrawable(
+                    new ColorDrawable(Color.WHITE));
+                dialog.show();
+            }
+        });
+ return view;
+
     }
-
-
     public void startASycnc() {
         new traerproductos().execute(idalmacen);
     }

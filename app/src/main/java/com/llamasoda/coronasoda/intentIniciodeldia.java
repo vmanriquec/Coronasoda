@@ -56,7 +56,7 @@ public class intentIniciodeldia extends AppCompatActivity {
     String FileName = "myfile";
     SharedPreferences prefs;
     private String[] strArrData = {"No Suggestions"};
-    private String[] strArrDataventas = {"No Suggestions"};
+
     private String[] strArrDataproducto = {"No Suggestions"};
     private String[] strArrDataproductopedido = {"No Suggestions"};
     private String[] strArrDatarecibe = {"No Suggestions"};
@@ -68,6 +68,7 @@ public class intentIniciodeldia extends AppCompatActivity {
     private RecyclerView.LayoutManager lManager;
 
 
+    private String[] strArrDataventas = {"No Suggestions"};
     private RecyclerView.Adapter adapterventas;
     private RecyclerView.Adapter adapterproductoventas;
     private RecyclerView recyclerproducto, recyclerventas;

@@ -8,19 +8,19 @@
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:background="@drawable/blue_leftcorner_bkg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/botoncajaredondeada" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/cabeceradialogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selecciona algo adicional"
+        android:text="Ordenes activas"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,5 +36,5 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toStartOf="@+id/cabeceradialogo"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/burger" />
+        app:srcCompat="@drawable/verpedido" />
 </androidx.constraintlayout.widget.ConstraintLayout>

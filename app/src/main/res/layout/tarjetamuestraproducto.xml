@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:id="@+id/imageLayout"
-            android:layout_width="316dp"
+            android:layout_width="320dp"
             android:layout_height="match_parent"
             android:paddingBottom="2dp">
 
@@ -30,14 +30,14 @@
 
             <TextView
                 android:id="@+id/inventario"
-                android:layout_width="37dp"
-                android:layout_height="34dp"
+                android:layout_width="27dp"
+                android:layout_height="30dp"
                 android:layout_alignStart="@+id/imagen"
                 android:layout_alignEnd="@+id/imagen"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="-29dp"
                 android:layout_marginTop="1dp"
-                android:layout_marginEnd="102dp"
+                android:layout_marginEnd="95dp"
                 android:background="@drawable/circulofondo"
                 android:hint="n"
                 android:textAlignment="center"
@@ -47,12 +47,12 @@
 
             <TextView
                 android:id="@+id/nombre"
-                android:layout_width="wrap_content"
+                android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="76dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="62dp"
                 android:hint="ItemName"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -62,28 +62,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/nombre"
-                android:layout_marginStart="26dp"
-                android:layout_marginBottom="-39dp"
+                android:layout_marginStart="150dp"
+                android:layout_marginBottom="-24dp"
                 android:layout_toEndOf="@+id/imagen"
                 android:hint="Price"
                 android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/ingredientes"
-                android:layout_width="171dp"
-                android:layout_height="44dp"
+                android:layout_width="186dp"
+                android:layout_height="41dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="91dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="56dp"
+                android:layout_marginEnd="0dp"
                 android:layout_toEndOf="@+id/imagen"
                 android:text="TextView" />
 
             <ImageView
                 android:id="@+id/imagen"
-                android:layout_width="111dp"
-                android:layout_height="99dp"
+                android:layout_width="94dp"
+                android:layout_height="83dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="28dp"
@@ -92,21 +92,17 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="92dp"
-            android:layout_height="match_parent"
+            android:layout_width="103dp"
+            android:layout_height="99dp"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/botonmas1"
-                android:layout_width="82dp"
-                android:layout_height="83dp"
+                android:layout_width="55dp"
+                android:layout_height="62dp"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/campana"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/motofuerte"
                 android:elevation="1dp"
                 android:text="+"
                 android:textColor="@color/colorPrimaryDark"

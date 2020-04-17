@@ -379,7 +379,7 @@ int idusuario;
         crearpedidoinicial(Integer.parseInt(usuariostring),0.0,currentDateandTime,Integer.parseInt(idalmacen));
 
 
-        Intent i= new Intent(this,Menutab.class);
+        Intent i= new Intent(this,Listaparaseleccionar.class);
         startActivity(i);
     }
     public final static void crearpedidoinicial(int idusuario,Double totalpedido,String fechapedido,int idalmacen){

@@ -8,6 +8,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="30dp"
+        app:cardPreventCornerOverlap="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.391"
@@ -32,8 +34,8 @@
 
             <TextView
                 android:id="@+id/productoencardview"
-                android:layout_width="228dp"
-                android:layout_height="53dp"
+                android:layout_width="195dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|left"
                 android:gravity="left|center_vertical"
                 android:text="TextView"
@@ -52,11 +54,18 @@
 
             <TextView
                 android:id="@+id/preciototalproductocardview"
-                android:layout_width="wrap_content"
+                android:layout_width="31dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="12.00"
                 android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/eliminardedialog"
+                android:layout_width="26dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/eliminardedialogo" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

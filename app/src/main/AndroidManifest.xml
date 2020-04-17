@@ -9,29 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Verpedido">
 
-
-        <activity android:name=".G">
-
-
-        </activity>
-
-        <activity android:name=".Menutab">
 
 
         </activity>
-
-
+        <activity android:name=".Listaparaseleccionar"></activity>
+        <activity android:name=".G" />
+        <activity android:name=".Menutab" />
         <activity
             android:name=".intentIniciodeldia"
             android:label="@string/title_activity_tab"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".comidaListActivity"
             android:label="@string/title_comida_list"
             android:theme="@style/AppTheme.NoActionBar" />
+
+
+
         <activity
             android:name=".comidaDetailActivity"
             android:label="@string/title_comida_detail"
@@ -41,24 +37,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.llamasoda.coronasoda.comidaListActivity" />
         </activity>
-
-
-
-
-        <activity android:name=".Login" >
-            <intent-filter >
+        <activity android:name=".Login">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity android:name=".Mainfirebase">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

@@ -33,8 +33,6 @@ public class Adaptadorpedidos extends RecyclerView.Adapter<Adaptadorpedidos.Adap
     static class AdaptadorViewHolder extends RecyclerView.ViewHolder{
         protected TextView mesapedido;
         protected TextView totalpedido;
-        protected TextView clientepedido;
-        protected TextView hora;
 
 
         public AdaptadorViewHolder(View v){

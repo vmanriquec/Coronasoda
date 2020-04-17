@@ -7,9 +7,9 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:background="@drawable/blue_leftcorner_bkg"
+        android:layout_width="410dp"
+        android:layout_height="620dp"
+        android:background="@drawable/backgrounddashboard"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,75 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/buttonmesasquenoexistenbackground"
-            android:gravity="center_horizontal|center_vertical"
-            android:textSize="24sp"
-            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/botonlisto"
-            android:layout_width="211dp"
-            android:layout_height="41dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_weight="1"
-            android:background="#FFDA02"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="   Ver Orden       S/."
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/montototalito"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|left|center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="000.00"
-            android:textSize="24sp" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recydedialogo"
-        android:layout_width="377dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-    <LinearLayout
-        android:layout_width="406dp"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recydedialogo"
-        app:layout_constraintVertical_bias="0.074">
-
-        <Button
-            android:id="@+id/botondialogocancelar"
-            android:layout_width="3dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/semiTransparentWhite"
-            android:text="CANCELAR" />
-
-        <Button
-            android:id="@+id/botondialogcontinuar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FFDA02"
-            android:text="CONTINUAR" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

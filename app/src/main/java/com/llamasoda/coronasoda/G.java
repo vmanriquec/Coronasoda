@@ -42,9 +42,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -67,6 +65,8 @@ int idusuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         Realm.init(getApplication());
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
                 .name("pedido.realm")
@@ -118,21 +118,18 @@ String idalamce=prefs.getString("idalmacenactivosf","");
         acanasta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplication(),"se cargara el pedido" ,Toast.LENGTH_LONG).show();
+
                 String come=comentarioacocina.getText().toString();
 
                 TextView almacenactivo=(TextView) findViewById(R.id.almacenactivo);
-                TextView usuario=(TextView)findViewById(R.id.usuarioactivocontrol);
+                TextView usuario=(TextView)findViewById(R.id.uno);
                 if (come==""){
                     come="no hay comentarios";
                     }else {
                     actualizarcomentarioparacadaproducto(idsupremodedetalle, come);
                     }
-
                actualizartotalenpedido();
-
-
-                Intent i= new Intent(getApplicationContext(),Menutab.class);
+                Intent i= new Intent(getApplicationContext(),Listaparaseleccionar.class);
                 startActivity(i);
             }
         });
@@ -497,12 +494,10 @@ String idalamce=prefs.getString("idalmacenactivosf","");
 
                                 if (isChecked) {
 realgrabarcrema(nombrecremita,Integer.parseInt(idproductoseleccionado));
-                                    Toast.makeText(getApplicationContext(),"esta activo"+String.valueOf(cbc.getId()),Toast.LENGTH_LONG).show();
 
                                 } else {
                                     eliminaracrema(idsupremodedetalle,Integer.parseInt(idproductoseleccionado),nombrecremita);
-                                    Toast.makeText(getApplicationContext(),"esta desactivadazooooooo"+String.valueOf(cbc.getId())+"entotal hay"+String.valueOf(numerodeadiciones),Toast.LENGTH_LONG).show();
-                                }
+                                  }
                             }});
 
 
@@ -510,12 +505,6 @@ realgrabarcrema(nombrecremita,Integer.parseInt(idproductoseleccionado));
                         my_layout.addView(cbc);
                     }
 
-
-                    Button btn = new Button(getApplication());
-                    btn.setText("Listo");
-
-                    TableRow.LayoutParams buttonlayout = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-                    my_layout.addView(btn, buttonlayout);
 
 
 
@@ -551,7 +540,7 @@ realgrabarcrema(nombrecremita,Integer.parseInt(idproductoseleccionado));
             }
 
         });
-        Log.d("TAG", "se creara por primera vez el detalle");
+
 
     }
 
@@ -570,7 +559,7 @@ realgrabarcrema(nombrecremita,Integer.parseInt(idproductoseleccionado));
                 AdicionalRealm.setEstadoadicional("1");
             }
         });
-        Log.d("TAG", "se creara por primera vez el detalle");
+
 
     }
     public  static void realgrabarcrema(final String nombrecrema,int idproducto) {
@@ -588,7 +577,7 @@ realgrabarcrema(nombrecremita,Integer.parseInt(idproductoseleccionado));
                 CremaRealm.setNombrecrema(nombrecrema);
             }
         });
-        Log.d("TAG", "se creara por primera vez el detalle");
+
 
     }
 
@@ -627,6 +616,20 @@ int y=ido-1;
         return results;
     }
 
+
+    public final static List<PedidoRealm> eliminarpedidos() {
+        Realm pedido = Realm.getDefaultInstance();
+
+        RealmResults<PedidoRealm> results =
+                pedido.where(PedidoRealm.class)
+
+                        .findAll();
+        results.toString().trim();
+        pedido.beginTransaction();
+        results.deleteFirstFromRealm();     // App crash
+        pedido.commitTransaction();
+        return results;
+    }
     public final static void Masactualizarsubtotaldetallemas(int id,String subtotal){
         int tu= id-1;
         Realm pedido = Realm.getDefaultInstance();

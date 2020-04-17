@@ -1,82 +1,83 @@
 package com.llamasoda.coronasoda;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+        import android.app.Dialog;
+        import android.content.Context;
+        import android.content.SharedPreferences;
+        import android.graphics.Color;
+        import android.graphics.drawable.ColorDrawable;
+        import android.net.Uri;
+        import android.os.AsyncTask;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.Button;
+        import android.widget.ListView;
+        import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+        import androidx.appcompat.app.AlertDialog;
+        import androidx.fragment.app.Fragment;
+        import androidx.recyclerview.widget.DividerItemDecoration;
+        import androidx.recyclerview.widget.GridLayoutManager;
+        import androidx.recyclerview.widget.LinearLayoutManager;
+        import androidx.recyclerview.widget.RecyclerView;
 
-import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
-import com.llamasoda.coronasoda.adapter.Adaptadordialogo;
-import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
-import com.llamasoda.coronasoda.modelo.Ventas;
+        import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
+        import com.llamasoda.coronasoda.adapter.Adaptadordialogo;
+        import com.llamasoda.coronasoda.adapter.Adaptadorproductos;
+        import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
+        import com.llamasoda.coronasoda.modelo.Productos;
 
-import java.util.ArrayList;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
-
-//import android.support.v4.app.Fragment;
-
+        import org.json.JSONArray;
+        import org.json.JSONException;
+        import org.json.JSONObject;
+        import java.io.BufferedReader;
+        import java.io.BufferedWriter;
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.io.InputStreamReader;
+        import java.io.OutputStream;
+        import java.io.OutputStreamWriter;
+        import java.net.HttpURLConnection;
+        import java.net.MalformedURLException;
+        import java.net.URL;
+        import java.text.SimpleDateFormat;
+        import java.util.ArrayList;
+        import java.util.Date;
+        import io.realm.Realm;
+        import io.realm.RealmConfiguration;
+        import io.realm.RealmResults;
+        import static com.llamasoda.coronasoda.Login.CONNECTION_TIMEOUT;
+        import static com.llamasoda.coronasoda.Login.READ_TIMEOUT;
 public class segundofragment extends Fragment {
-    View v;
-    String session, nombreususrio, almacenactivo, idalmacenactivo;
-    String FileName = "myfile";
-    SharedPreferences prefs;
-    String[] strArrDataventaso = {"No Suggestions"};
-    ArrayList<String> dataListventitas = new ArrayList<String>();
-    RecyclerView.Adapter adapterventas;
+
+View vista;
     public static segundofragment newInstance() {
         return new segundofragment();
     }
 
     @Override
+
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         v= inflater.inflate(R.layout.segundomenudetabs , container, false);
-
-
-
-        RecyclerView gggg  = (RecyclerView) v.findViewById(R.id.recydedialogo);
-        ArrayList<Datostarjetadialogo> peopleventas = new ArrayList<>();
-        peopleventas.clear();
-        ArrayList<Datostarjetadialogo> datosdetodaslastarjetas = new ArrayList<>();
-        ArrayList<String> datalisttarjeta = new ArrayList<String>();
-        String[] strtarjeta = {"No Suggestions"};
-        datosdetodaslastarjetas.clear();
-        Realm pedido = Realm.getDefaultInstance();
-        RealmResults<Detallepedidorealm> results =
-                pedido.where(Detallepedidorealm.class)
-                        .findAll();
-        int w = results.size();
-        for (int i = 0; i < w; i++){
-            int gg=results.get(i).getCantidadrealm();
-            int  popo=results.get(i).getIdpedido();
-            String lll=results.get(i).getNombreproductorealm();
-            Double jjj=Double.parseDouble(results.get(i).getSubtotal());
-            Datostarjetadialogo datoso =new Datostarjetadialogo(popo,gg,lll,jjj);
-            peopleventas.add(datoso);
-        }
+        vista=inflater.inflate(R.layout.segundomenudetabs , container, false);
 
 
 
 
 
 
-    strArrDataventaso = dataListventitas.toArray(new String[dataListventitas.size()]);
 
+        return vista;
 
-        RecyclerView.Adapter  adapterventas = new Adaptadordialogo(peopleventas,getActivity());
-     gggg.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-     gggg.setAdapter(adapterventas);
-
-
-        return v;
     }
 
+
+
+
+
+
 }
+

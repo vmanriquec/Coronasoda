@@ -22,7 +22,6 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.llamasoda.coronasoda.Realm.Crudetallepedido;
 import com.llamasoda.coronasoda.modelo.Adicional;
@@ -722,26 +721,57 @@ Double zz,ll=0.0;
 
 
 
-    public final static List<CremaRealm> eliminaraTotalcrema(int ido) {
+    public final static List<CremaRealm> eliminaraunTotalcrema(int ido) {
         Realm pedido = Realm.getDefaultInstance();
-        int y=ido-1;
+
         RealmResults<CremaRealm> results =
                 pedido.where(CremaRealm.class).
-                        equalTo("id", y)
+                        equalTo("id", ido)
                         .findAll();
         results.toString().trim();
-        pedido.beginTransaction();
         results.deleteAllFromRealm() ;
         pedido.commitTransaction();
         return results;
     }
 
-    public final static List<AdicionalRealm> eliminarTotaladicional(int ido) {
+
+
+
+
+
+
+
+    public final static int capturariddedetalledeprodysubtotal(String producto, String total) {
+int ff = 0;
         Realm pedido = Realm.getDefaultInstance();
-        int y=ido-1;
+        pedido.beginTransaction();
+
+
+
+        Detallepedidorealm pedidoRealm = pedido.where(Detallepedidorealm.class).
+                equalTo("nombreproductorealm",producto).
+                equalTo("subtotal",total)
+                .findFirst();
+        ff=pedidoRealm.getId();
+
+        return ff;
+
+
+    }
+
+
+
+
+
+
+
+
+    public final static List<AdicionalRealm> eliminarunTotaladicional(int ido) {
+        Realm pedido = Realm.getDefaultInstance();
+
         RealmResults<AdicionalRealm> results =
                 pedido.where(AdicionalRealm.class).
-                        equalTo("id", y)
+                        equalTo("id", ido)
                         .findAll();
         results.toString().trim();
         pedido.beginTransaction();
@@ -750,12 +780,12 @@ Double zz,ll=0.0;
         return results;
     }
 
-    public final static List<Detallepedidorealm> eliminarTOTALdetallepedido(int ido) {
+    public final static List<Detallepedidorealm> eliminarunTOTALdetallepedido(int ido) {
         Realm pedido = Realm.getDefaultInstance();
-        int y=ido-1;
+
         RealmResults<Detallepedidorealm> results =
                 pedido.where(Detallepedidorealm.class).
-                        equalTo("id", y)
+                        equalTo("id", ido)
                         .findAll();
         results.toString().trim();
         pedido.beginTransaction();

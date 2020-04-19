@@ -1,19 +1,23 @@
 package com.llamasoda.coronasoda;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
 import com.llamasoda.coronasoda.adapter.Adaptadordialogo;
 import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -21,18 +25,20 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-public class Verpedido extends AppCompatActivity {
+public class Verpedidodos extends AppCompatActivity implements Eventlistener {
     String[] strArrDataventaso = {"No Suggestions"};
     ArrayList<String> dataListventitas = new ArrayList<String>();
-
-    public Verpedido(Verpedido verpedido) {
-    }
-
-
+    RecyclerView gggg;
+    Context context;
+    TextView  frito;
+    TextView tio;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verpedido);
+     frito =(TextView) findViewById(R.id.num);
+        tio=(TextView) findViewById(R.id.miavion);
+
 
         Realm.init(getApplication());
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
@@ -44,24 +50,21 @@ public class Verpedido extends AppCompatActivity {
 
         TextView yy=(TextView) findViewById(R.id.txtdireccion);
 
-yy.setText("avenida la petit");
+        yy.setText("avenida la petit");
 
 
 
 
 
 
-
-recargartotalesisisomos();
+        recargartotalesisisomos();
 
     }
 
-    private void recargartotalesisisomos() {
-        RecyclerView gggg  = (RecyclerView) findViewById(R.id.recyclerdepedidos);
-        TextView io=(TextView) findViewById(R.id.num);
-        TextView tio=(TextView) findViewById(R.id.miavion);
+    public  void recargartotalesisisomos() {
 
-         ArrayList<Datostarjetadialogo> peopleventas = new ArrayList<>();
+
+        ArrayList<Datostarjetadialogo> peopleventas = new ArrayList<>();
         peopleventas.clear();
         ArrayList<Datostarjetadialogo> datosdetodaslastarjetas = new ArrayList<>();
         ArrayList<String> datalisttarjeta = new ArrayList<String>();
@@ -73,7 +76,7 @@ recargartotalesisisomos();
                 pedido.where(Detallepedidorealm.class)
                         .findAll();
         int w = results.size();
-        io.setText(String.valueOf(w));
+
         Double tt=0.0;
         for (int i = 0; i < w; i++){
             int gg=results.get(i).getCantidadrealm();
@@ -84,16 +87,52 @@ recargartotalesisisomos();
             Datostarjetadialogo datoso =new Datostarjetadialogo(popo,gg,lll,jjj);
             peopleventas.add(datoso);
         }
+        frito.setText(String.valueOf(w));
         tio.setText(String.valueOf(tt));
         strArrDataventaso = dataListventitas.toArray(new String[dataListventitas.size()]);
-        RecyclerView.Adapter  adapterventas = new Adaptadordialogo(peopleventas,getApplication());
-        gggg.setLayoutManager(new GridLayoutManager(getApplication(), 1));
+        Adapter  adapterventas = new Adaptadordialogo(peopleventas,this);
+        RecyclerView gggg  = (RecyclerView) findViewById(R.id.recyclerdepedidos);
+        gggg.setLayoutManager(new LinearLayoutManager(this));
         gggg.setAdapter(adapterventas);
+
+
+
 
 
     }
 
 
 
+    public void onEventName(String k) {
+        context = this;
 
+        frito.setText(k);
+
+
+    }
+    private void cargarbarradeabajo() {
+        TextView tot=(TextView) findViewById(R.id.seis);
+        TextView cantidadfragment=(TextView) findViewById(R.id.cuatro);
+
+        Realm.init(getApplicationContext());
+        Realm pedido = Realm.getDefaultInstance();
+        RealmResults<Detallepedidorealm> results =
+                pedido.where(Detallepedidorealm.class)
+                        .findAll();
+        int w = results.size();
+        cantidadfragment.setText(String.valueOf(w));
+        Double tt=0.0;
+        for (int i = 0; i < w; i++){
+            int gg=results.get(i).getCantidadrealm();
+            int  popo=results.get(i).getIdpedido();
+            String lll=results.get(i).getNombreproductorealm();
+            Double jjj=Double.parseDouble(results.get(i).getSubtotal());
+            tt=tt+jjj;
+
+        }
+        tot.setText("S/. "+String.valueOf(tt));
+
+
+
+    }
 }

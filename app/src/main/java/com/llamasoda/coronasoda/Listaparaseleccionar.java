@@ -54,7 +54,7 @@ import static com.llamasoda.coronasoda.Login.CONNECTION_TIMEOUT;
 import static com.llamasoda.coronasoda.Login.READ_TIMEOUT;
 
 public class Listaparaseleccionar extends AppCompatActivity {
-
+    String[] strArrDataventaso = {"No Suggestions"};
 
 
     String session, nombreususrio, almacenactivo, idalmacenactivo;
@@ -82,16 +82,13 @@ public class Listaparaseleccionar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listaparaseleccionar);
-cargarbarradeabajo();
+        cargarbarradeabajo();
         TextView fechadehoy = (TextView) findViewById(R.id.tres);
-        TextView usuariotxt=(TextView) findViewById(R.id.uno);
-        TextView almacentxt=(TextView) findViewById(R.id.dos);
-        TextView botonlisto=(TextView) findViewById(R.id.cinco);
-        TextView tot=(TextView) findViewById(R.id.seis);
-        TextView cantidadfragment=(TextView) findViewById(R.id.cuatro);
-
-
-
+        TextView usuariotxt = (TextView) findViewById(R.id.uno);
+        TextView almacentxt = (TextView) findViewById(R.id.dos);
+        TextView botonlisto = (TextView) findViewById(R.id.cinco);
+        TextView tot = (TextView) findViewById(R.id.seis);
+        TextView cantidadfragment = (TextView) findViewById(R.id.cuatro);
 
 
         Realm.init(getApplication());
@@ -102,19 +99,19 @@ cargarbarradeabajo();
         Realm.setDefaultConfiguration(realmConfig);
 
         prefs = getApplication().getSharedPreferences(FileName, Context.MODE_PRIVATE);
-        String usuarior=prefs.getString("nombreusuariof","");
-        String almacennombre=prefs.getString("almacenactivosf","");
-        idalmacen=prefs.getString("idalmacenactivosf","");
-        String usuariostring   =prefs.getString("idusuario","");
+        String usuarior = prefs.getString("nombreusuariof", "");
+        String almacennombre = prefs.getString("almacenactivosf", "");
+        idalmacen = prefs.getString("idalmacenactivosf", "");
+        String usuariostring = prefs.getString("idusuario", "");
 
         usuariotxt.setText(usuarior);
         almacentxt.setText(almacennombre);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDateandTime = sdf.format(new Date());
-         fechadehoy.setText(currentDateandTime);
+        fechadehoy.setText(currentDateandTime);
 
-        ListView lista=(ListView) findViewById(R.id.listainicio);
-        recyclerproducto=(RecyclerView) findViewById(R.id.recyclerlistado);
+        ListView lista = (ListView) findViewById(R.id.listainicio);
+        recyclerproducto = (RecyclerView) findViewById(R.id.recyclerlistado);
 
         recyclerproducto.setHasFixedSize(true);
         recyclerproducto.addItemDecoration(new DividerItemDecoration(getApplication(), LinearLayoutManager.VERTICAL));
@@ -131,31 +128,34 @@ cargarbarradeabajo();
                         .findAll();
         int w = results.size();
         cantidadfragment.setText(String.valueOf(w));
-        Double tt=0.0;
-        for (int i = 0; i < w; i++){
-            int gg=results.get(i).getCantidadrealm();
-            int  popo=results.get(i).getIdpedido();
-            String lll=results.get(i).getNombreproductorealm();
-            Double jjj=Double.parseDouble(results.get(i).getSubtotal());
-            tt=tt+jjj;
+        Double tt = 0.0;
+        for (int i = 0; i < w; i++) {
+            int gg = results.get(i).getCantidadrealm();
+            int popo = results.get(i).getIdpedido();
+            String lll = results.get(i).getNombreproductorealm();
+            Double jjj = Double.parseDouble(results.get(i).getSubtotal());
+            tt = tt + jjj;
 
         }
-        tot.setText("S/. "+String.valueOf(tt));
+        tot.setText("S/. " + String.valueOf(tt));
 
         botonlisto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-iraverpedidos();
+
+                iraverpedidos();
+
 
             }
-
         });
+
+
     }
 
     private void iraverpedidos() {
 
 
-        Intent i= new Intent(getApplication(),Verpedido.class);
+        Intent i= new Intent(getApplication(),Verpedidodos.class);
         startActivity(i);
     }
 
@@ -319,5 +319,6 @@ cargarbarradeabajo();
         //eliminarTOTALdetallepedido(yi);
 
     }
+
 
 }

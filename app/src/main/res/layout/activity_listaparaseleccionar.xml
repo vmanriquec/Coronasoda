@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <LinearLayout
-        android:layout_width="376dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/blue_leftcorner_bkg"

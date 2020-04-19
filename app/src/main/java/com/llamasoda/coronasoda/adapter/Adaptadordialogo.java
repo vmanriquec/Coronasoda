@@ -1,25 +1,27 @@
 package com.llamasoda.coronasoda.adapter;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.TextView;
-import android.app.Activity.*;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.llamasoda.coronasoda.Eventlistener;
 import com.llamasoda.coronasoda.G;
-import com.llamasoda.coronasoda.Inter;
+import com.llamasoda.coronasoda.Listaparaseleccionar;
 import com.llamasoda.coronasoda.R;
-
 import com.llamasoda.coronasoda.Realm.Crudetallepedido;
 import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
-import com.llamasoda.coronasoda.Verpedido;
+
+import com.llamasoda.coronasoda.Verpedidodos;
 import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
 
 import java.util.ArrayList;
@@ -28,13 +30,20 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class Adaptadordialogo extends RecyclerView.Adapter<Adaptadordialogo.AdaptadorViewHolder> {
-private Context mainContext;
+import static com.llamasoda.coronasoda.G.capturariddedetalledeprodysubtotal;
+
+public class Adaptadordialogo extends RecyclerView.Adapter<Adaptadordialogo.AdaptadorViewHolder>  {
+private Verpedidodos mainContext;
         String foto;
         SharedPreferences prefs;
         String FileName ="myfile";
+    private Eventlistener listener;
+    public Adaptadordialogo(Eventlistener listener){
+        this.listener = listener;
+    }
+
 private List<Datostarjetadialogo> items;
-public Adaptadordialogo(ArrayList<Datostarjetadialogo> items, Context contexto){
+public Adaptadordialogo(ArrayList<Datostarjetadialogo> items, Verpedidodos contexto){
         this.mainContext=contexto;
         this.items=items;
 
@@ -71,7 +80,6 @@ static class AdaptadorViewHolder extends RecyclerView.ViewHolder{
         viewHolder.itemView.setTag(item);
 
 
-
         viewHolder.cantidad.setText(String.valueOf(item.getCantidad()));
         viewHolder.productonombre.setText(item.getProducto());
         viewHolder.total.setText(String.valueOf(item.getTotal()));
@@ -79,49 +87,28 @@ static class AdaptadorViewHolder extends RecyclerView.ViewHolder{
         viewHolder.eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tr= Crudetallepedido.calculateIndex();
-                int iddedetalles=Crudetallepedido.calculateIndex();
-                G.eliminaraTotalcrema(iddedetalles);
-                G.eliminarTotaladicional(iddedetalles);
-                G.eliminarTOTALdetallepedido(iddedetalles);
+
+              String producto=items.get(position).getProducto();
+                String subtotal =String.valueOf(items.get(position).getTotal());
+
+                      int numerito= G.capturariddedetalledeprodysubtotal(producto,subtotal);
+///Toast.makeText(mainContext,"el id de detalle"+String.valueOf(numerito),Toast.LENGTH_LONG).show();
+
+
+                //int tr= Crudetallepedido.calculateIndex();
+                //int iddedetalles=Crudetallepedido.calculateIndex();
+
+
+
+                G.eliminaraunTotalcrema(numerito);
+                G.eliminarunTotaladicional(numerito);
+                G.eliminarunTOTALdetallepedido(numerito);
                 items.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, getItemCount());
+                mainContext.recargartotalesisisomos();
 
 
-                ArrayList<Datostarjetadialogo> peopleventas = new ArrayList<>();
-                peopleventas.clear();
-                ArrayList<Datostarjetadialogo> datosdetodaslastarjetas = new ArrayList<>();
-                ArrayList<String> datalisttarjeta = new ArrayList<String>();
-                String[] strtarjeta = {"No Suggestions"};
-                datosdetodaslastarjetas.clear();
-
-                Realm pedido = Realm.getDefaultInstance();
-                RealmResults<Detallepedidorealm> results =
-                        pedido.where(Detallepedidorealm.class)
-                                .findAll();
-                int w = results.size();
-
-               // listener.foo(String.valueOf(w));
-
-
-                Double tt=0.0;
-                for (int i = 0; i < w; i++){
-                    int gg=results.get(i).getCantidadrealm();
-                    int  popo=results.get(i).getIdpedido();
-                    String lll=results.get(i).getNombreproductorealm();
-                    Double jjj=Double.parseDouble(results.get(i).getSubtotal());
-                    tt=tt+jjj;
-                    Datostarjetadialogo datoso =new Datostarjetadialogo(popo,gg,lll,jjj);
-                    peopleventas.add(datoso);
-                }
-              //  tio.setText(String.valueOf(tt));
-
-                ///gggg.
-                //int position = gggg.indexOf(cart);
-                //itemsList.remove(position);
-                //notifyItemRemoved(position);
-                //notifyItemRangeChanged(position, itemsList.size());
 
             }
         });

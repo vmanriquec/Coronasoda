@@ -69,7 +69,7 @@ int idusuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_login);
+        setContentView(R.layout.prueba);
         Realm.init(getApplicationContext());
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
                 .name("pedido.realm")

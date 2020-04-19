@@ -9,12 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Verpedido">
-
-
-
-        </activity>
-        <activity android:name=".Listaparaseleccionar"></activity>
+        <activity android:name=".Verpedidodos"></activity>
+        <activity android:name=".Listaparaseleccionar" />
         <activity android:name=".G" />
         <activity android:name=".Menutab" />
         <activity
@@ -25,9 +21,6 @@
             android:name=".comidaListActivity"
             android:label="@string/title_comida_list"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
-
         <activity
             android:name=".comidaDetailActivity"
             android:label="@string/title_comida_detail"

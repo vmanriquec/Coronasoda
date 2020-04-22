@@ -2,6 +2,7 @@ package com.llamasoda.coronasoda;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,8 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.annotations.Nullable;
 import com.llamasoda.coronasoda.Realm.Crudpedido;
 import com.llamasoda.coronasoda.Realm.PedidoRealm;
 import com.llamasoda.coronasoda.modelo.Almacen;
@@ -41,6 +48,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import io.realm.Realm;
@@ -49,6 +57,9 @@ import io.realm.RealmConfiguration;
 public class Login extends AppCompatActivity {
 String nombreusuario1;
 String claveusuario;
+    private FirebaseAuth mAuth;
+    private static final int RC_SIGN_IN = 101;
+
 int idusuario;
     String FileName = "myfile";
     SharedPreferences prefs;
@@ -65,7 +76,7 @@ int idusuario;
     public static final int READ_TIMEOUT = 15000;
     TextView nombreuser;
     TextView clave;
-
+Button nuevousuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +93,14 @@ int idusuario;
         TextView  claveusuario=(TextView) findViewById(R.id.phpclaveusuario);
              Spinner spinerio=(Spinner) findViewById(R.id.spinnerio);
         Button va=(Button) findViewById(R.id.phpbtnloginphp) ;
+nuevousuario=(Button) findViewById(R.id.sincuenta);
+
+nuevousuario.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+            iraregistrarusuarionuevo();
+    }
+});
         new cargaralmacen().execute();
         va.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -107,6 +126,23 @@ int idusuario;
             }
         });
     }
+
+    private void iraregistrarusuarionuevo() {
+
+
+
+        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+                .setIsSmartLockEnabled(!com.firebase.ui.auth.BuildConfig.DEBUG)
+                .setAvailableProviders(Collections.singletonList(
+                        new AuthUI.IdpConfig.PhoneBuilder().build()))
+                .setLogo(R.mipmap.ic_launcher)
+                .build();
+
+        startActivityForResult(intent, RC_SIGN_IN);
+
+
+    }
+
     private class Loginsinfacebook extends AsyncTask<String, String, String>
     {
         ProgressDialog pdLoading = new ProgressDialog(Login.this);
@@ -223,7 +259,7 @@ int idusuario;
                         idusuario=mesousuarios.getIdusuario();
                     }
                     strArrDatausuario = dataListusuario.toArray(new String[dataListusuario.size()]);
-                    guardarsharesinfacebook(nombreuser.getText().toString(), clave.getText().toString(),idusuario);
+                    guardarsharesinfacebook(nombreuser.getText().toString(), clave.getText().toString(),idusuario,"","");
 
                     ir();
                     pdLoading.dismiss();
@@ -342,7 +378,7 @@ int idusuario;
         }
 
     }
-    public   void guardarsharesinfacebook(String nombreusuario,String claveusuario,int idusuario){
+    public   void guardarsharesinfacebook(String nombreusuario,String claveusuario,int idusuario,String telefono,String iddefirebase){
         SharedPreferences sharedPreferences =getSharedPreferences(FileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         Spinner s=(Spinner)findViewById(R.id.spinnerio);
@@ -361,7 +397,12 @@ int idusuario;
         editor.putString("almacenactivosf",almacenactivosf);
         editor.putString("idalmacenactivosf",idalmacenactivosf);
         editor.putString("editandopedidof","no");
+        editor.putString("telefono",telefono);
+        editor.putString("idfirebase",iddefirebase);
         editor.putString("idusuario",String.valueOf(idusuario));
+
+
+
 
         editor.commit();
 
@@ -397,5 +438,57 @@ int idusuario;
                 realmDetallepedidorealm.setIdalmacen(idalmacen);
             }
         });
+    }
+
+
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                showAlertDialog(user);
+            } else {
+                /**
+                 *   Sign in failed. If response is null the user canceled the
+                 *   sign-in flow using the back button. Otherwise check
+                 *   response.getError().getErrorCode() and handle the error.
+                 */
+                Toast.makeText(getBaseContext(), "Algo Fallo", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void showAlertDialog(FirebaseUser user) {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Login.this);
+
+        // Set Title
+        mAlertDialog.setTitle("Verificacion Satisfactoria");
+
+        // Set Message
+       // mAlertDialog.setMessage("Tu numero es  " + user.getPhoneNumber()+user.getUid());
+        guardarsharesinfacebook("", "",0,user.getPhoneNumber(),user.getUid());
+        registrodenuevousuario();
+
+        mAlertDialog.create();
+
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
+
+
+    private void registrodenuevousuario() {
+        Intent pi;
+        pi = new Intent(this,Registrodeusuario.class);
+        startActivity(pi);
     }
 }

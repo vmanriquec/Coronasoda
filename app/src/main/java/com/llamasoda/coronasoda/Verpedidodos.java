@@ -25,7 +25,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-public class Verpedidodos extends AppCompatActivity implements Eventlistener {
+public class Verpedidodos extends AppCompatActivity  {
     String[] strArrDataventaso = {"No Suggestions"};
     ArrayList<String> dataListventitas = new ArrayList<String>();
     RecyclerView gggg;

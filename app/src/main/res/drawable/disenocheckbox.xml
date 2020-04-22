@@ -4,6 +4,6 @@
 
         android:drawable="@drawable/user" />
     <item android:state_checked="false"
-        android:drawable="@drawable/beelivery_icon" />
+        android:drawable="@drawable/beeliveryicon" />
 
 </selector>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Mapa">
+
+
+    <fragment
+        android:id="@+id/mapa"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="409dp"
+        android:layout_height="547dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <RelativeLayout
+        android:id="@+id/relLayout1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bordecuadradosuave"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.823">
+
+        <ImageView
+            android:id="@+id/ic_magnify"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+
+            />
+
+        <TextView
+            android:id="@+id/direc"
+            android:layout_width="340dp"
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginBottom="5dp"
+
+            android:layout_toRightOf="@+id/ic_magnify"
+            android:background="@android:color/transparent"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Tu direccion"
+            android:textColor="@color/accent"
+            android:textColorHint="@color/accent"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relLayout10"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bordecuadradosuave"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.917">
+
+        <ImageView
+            android:id="@+id/ref"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+
+            />
+
+        <EditText
+            android:id="@+id/referencia"
+            android:layout_width="333dp"
+            android:layout_height="46dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="16dp"
+
+            android:layout_toRightOf="@+id/ic_magnify"
+            android:background="@android:color/transparent"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Alguna Referencia por favor."
+            android:textColor="#000"
+            android:textColorHint="@color/accent"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/listo"
+        android:layout_width="72dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.043" />
+
+    <Button
+        android:id="@+id/aregistro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/accent"
+        android:text="Ingresa tus datos "
+        android:textColor="@color/colortres"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

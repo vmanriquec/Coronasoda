@@ -9,7 +9,7 @@
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
 
-
+    <color name="trans">#00000000 </color>
     <color name="coloruno">#22150F</color>
     <color name="colordos">#FFDA02</color>
     <color name="colortres">#FEFEFE</color>

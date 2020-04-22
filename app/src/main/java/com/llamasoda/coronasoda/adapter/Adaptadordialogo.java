@@ -1,25 +1,17 @@
 package com.llamasoda.coronasoda.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.llamasoda.coronasoda.Eventlistener;
 import com.llamasoda.coronasoda.G;
-import com.llamasoda.coronasoda.Listaparaseleccionar;
 import com.llamasoda.coronasoda.R;
-import com.llamasoda.coronasoda.Realm.Crudetallepedido;
-import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
 
 import com.llamasoda.coronasoda.Verpedidodos;
 import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
@@ -27,20 +19,11 @@ import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-
-import static com.llamasoda.coronasoda.G.capturariddedetalledeprodysubtotal;
-
 public class Adaptadordialogo extends RecyclerView.Adapter<Adaptadordialogo.AdaptadorViewHolder>  {
 private Verpedidodos mainContext;
         String foto;
         SharedPreferences prefs;
         String FileName ="myfile";
-    private Eventlistener listener;
-    public Adaptadordialogo(Eventlistener listener){
-        this.listener = listener;
-    }
 
 private List<Datostarjetadialogo> items;
 public Adaptadordialogo(ArrayList<Datostarjetadialogo> items, Verpedidodos contexto){

@@ -8,6 +8,7 @@
     tools:context=".Mapa">
 
 
+
     <fragment
         android:id="@+id/mapa"
         class="com.google.android.gms.maps.SupportMapFragment"

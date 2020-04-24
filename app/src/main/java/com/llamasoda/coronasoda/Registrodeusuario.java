@@ -1,5 +1,7 @@
 package com.llamasoda.coronasoda;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -9,11 +11,19 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.llamasoda.coronasoda.ModeloFirebase.Usuariofirebase;
 import com.llamasoda.coronasoda.modelo.Usuariocompleto;
 
 import java.io.BufferedReader;
@@ -29,6 +39,8 @@ import java.net.URL;
 
 public class Registrodeusuario extends AppCompatActivity {
     String FileName = "myfile";
+    private static  final String USUARIOf="datosusuario";
+
     SharedPreferences prefs;
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
@@ -47,7 +59,7 @@ Button registro,mapa;
 
 
         String telefonoguardado = prefs.getString("telefono", "");
-        String idfirebase = prefs.getString("idfirebase", "");
+        String idfirebase = prefs.getString("idfirebase", "mi fire");
         String direccione=prefs.getString("direccion", "");
         String referencias=prefs.getString("referencia","");
         String latitud=prefs.getString("latitud","");
@@ -69,8 +81,24 @@ direccion.setText(direccione);
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-           Usuariocompleto usuario = new Usuariocompleto(nombres.getText().toString() ,apellidos.getText().toString(),contrasena.getText().toString(),"sin imagen","sin idfacebook","sin nombre ",idfirebase,"mi telefono",contrasena.getText().toString(),correo.getText().toString(),"direccionficticia",1,Integer.valueOf(idalmacen),latitud,longitud,referencias);
-           new grabarusuario().execute(usuario);
+           Usuariocompleto nuevousuario = new Usuariocompleto(nombres.getText().toString() ,
+                   apellidos.getText().toString(),contrasena.getText().toString(),
+                   "sin imagen","sin idfacebook","sin nombre ",
+                   idfirebase,telefonoguardado,contrasena.getText().toString(),
+                 "iiii",direccione,1,Integer.parseInt(idalmacen),latitud,longitud,referencias);
+                FirebaseDatabase database =FirebaseDatabase.getInstance();
+                DatabaseReference reference=database.getReference(USUARIOf);
+                reference.child(idfirebase).setValue(nuevousuario);
+
+
+
+
+
+
+           new grabausuario().execute(nuevousuario);
+
+createDialog(nombres.getText().toString(),direccione);
+
 
             }
         });
@@ -90,8 +118,13 @@ mapa.setOnClickListener(new View.OnClickListener() {
         pi = new Intent(this,Mapa.class);
         startActivity(pi);
     }
+    private void irapedir() {
+        Intent pi;
+        pi = new Intent(this,Listaparaseleccionar.class);
+        startActivity(pi);
+    }
 
-    private class grabarusuario extends AsyncTask<Usuariocompleto, Void, String> {
+    private class grabausuario extends AsyncTask<Usuariocompleto, Void, String> {
         String resultado;
         HttpURLConnection conne;
         URL url = null;
@@ -108,7 +141,7 @@ mapa.setOnClickListener(new View.OnClickListener() {
         protected String doInBackground(Usuariocompleto... params) {
             ped=params[0];
             try {
-                url = new URL("http://sodapop.space/sugest/apigrabarusuario.php");
+                url = new URL("https://sodapop.pe/sugest/apigrabarusuario.php");
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -125,21 +158,26 @@ mapa.setOnClickListener(new View.OnClickListener() {
                 // Append parameters to URL
 
 
-
+                Log.d("valor",String.valueOf(ped.getLongitud()));
                 Uri.Builder builder = new Uri.Builder()
-
-
-
-                        .appendQueryParameter("nombreusuario",String.valueOf(ped.getNombreusuario()))
+                       .appendQueryParameter("nombreusuario",String.valueOf(ped.getNombreusuario()))
                         .appendQueryParameter("apellidos",String.valueOf(ped.getApellidos()))
                         .appendQueryParameter("claveusuario",String.valueOf(ped.getContrasena()))
                         .appendQueryParameter("imagen", String.valueOf(ped.getIdalmacen()))
                         .appendQueryParameter("idfirebase", String.valueOf(ped.getIdfirebase()))
-                        .appendQueryParameter("telefono", String.valueOf(ped.getIdfacebook()))
-                         .appendQueryParameter("contrasena", String.valueOf(ped.getContrasena()))
-                        .appendQueryParameter("correo", String.valueOf(ped.getCorreo()))
                         .appendQueryParameter("idalmacen", String.valueOf(ped.getIdalmacen()))
-                        .appendQueryParameter("direccion", String.valueOf(ped.getDireccion()));
+                        .appendQueryParameter("contrasena", String.valueOf(ped.getContrasena()))
+                        .appendQueryParameter("correo", String.valueOf(ped.getCorreo()))
+                        .appendQueryParameter("direccion", String.valueOf(ped.getDireccion()))
+                        .appendQueryParameter("telefono", String.valueOf(ped.getIdfacebook()))
+                        .appendQueryParameter("latitud", String.valueOf(ped.getLatitud()))
+                        .appendQueryParameter("longitud", String.valueOf(ped.getLongitud()))
+                        .appendQueryParameter("referencia", String.valueOf(ped.getReferencia()))
+
+                        ;
+
+
+
                 String query = builder.build().getEncodedQuery();
 
                 // Open connection for sending data
@@ -170,7 +208,7 @@ mapa.setOnClickListener(new View.OnClickListener() {
 
                     }
                     resultado=result.toString();
-
+                    Log.d("paso",resultado.toString());
                     return resultado;
 
                 } else {
@@ -178,22 +216,20 @@ mapa.setOnClickListener(new View.OnClickListener() {
                 }
             } catch (IOException e) {
                 e.printStackTrace()                ;
-                Log.d("mii", e.toString());
+                Log.d("valorito",e.toString());
                 return null;
             } finally {
                 conne.disconnect();
             }
             return resultado;
         }
-
-
         @Override
         protected void onPostExecute(String resultado) {
 
             super.onPostExecute(resultado);
 
             if(resultado.equals("true")){
-                Log.d("ii", "insertado");
+                Log.d("ii", resultado);
 
 
             }else{
@@ -207,7 +243,29 @@ mapa.setOnClickListener(new View.OnClickListener() {
 
 
         }
-
-
     }
+
+
+    private AlertDialog createDialog(String title, String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //AlertDialog dialog = builder.create();
+
+        LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_header_layout, null);
+        ((TextView)dialogView.findViewById(R.id.nombredialog)).setText(title);
+        ((TextView)dialogView.findViewById(R.id.direccionio)).setText(msg);
+        builder.setView(dialogView);
+        final AlertDialog dialog = builder.create();
+        ((Button)dialogView.findViewById(R.id.vaallistado)).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                dialog.dismiss();
+                irapedir();
+            }
+        });
+        return dialog;
+    }
+
+
+
 }

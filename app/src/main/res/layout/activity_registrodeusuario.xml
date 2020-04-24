@@ -41,14 +41,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="@drawable/bordecuadradosuave"
                 android:gravity="center_vertical|center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/user"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="28dp"
+                    android:layout_height="39dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/usercomanda" />
             </LinearLayout>
@@ -67,8 +66,8 @@
 
                 <ImageView
                     android:id="@+id/correo"
-                    android:layout_width="60dp"
-                    android:layout_height="49dp"
+                    android:layout_width="42dp"
+                    android:layout_height="35dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/fui_ic_mail_white_24dp"
                     app:srcCompat="@drawable/verpedido" />
@@ -83,9 +82,9 @@
 
                 <ImageView
                     android:id="@+id/imageView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:layout_gravity="left"
+                    android:layout_width="34dp"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
                     android:layout_marginTop="3dp"
                     app:srcCompat="@android:drawable/stat_sys_phone_call_on_hold" />
             </LinearLayout>
@@ -98,8 +97,8 @@
 
                 <ImageView
                     android:id="@+id/mi"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_width="39dp"
+                    android:layout_height="36dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/passwordfinal" />
             </LinearLayout>
@@ -119,8 +118,8 @@
 
                 <ImageView
                     android:id="@+id/imageView5"
-                    android:layout_width="47dp"
-                    android:layout_height="46dp"
+                    android:layout_width="33dp"
+                    android:layout_height="37dp"
                     app:srcCompat="@drawable/mapa" />
             </LinearLayout>
 
@@ -143,7 +142,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="@drawable/bordecuadradosuave"
                     android:gravity="center_horizontal|left|center_vertical"
                     android:hint="Nombres"
                     android:paddingLeft="10dp"
@@ -211,7 +209,7 @@
                 <EditText
                     android:id="@+id/contra"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:ems="10"
                     android:hint="Contraseña"
                     android:inputType="textPassword"
@@ -271,11 +269,11 @@
 
     <Button
         android:id="@+id/registrusuario"
-        android:layout_width="243dp"
-        android:layout_height="45dp"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_weight="1"
-        android:background="@drawable/botoncajaredondeada"
+        android:background="@drawable/btn_orange_2"
         android:gravity="center_horizontal|center_vertical"
         android:text="Registrate"
         android:textColor="@color/colortres"
@@ -283,9 +281,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintHorizontal_bias="0.392"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.922" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

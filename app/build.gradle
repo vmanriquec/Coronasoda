@@ -10,6 +10,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         compileOptions {
@@ -17,6 +18,11 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     buildTypes {
 
         debug {
@@ -112,5 +118,9 @@ dependencies {
 
     //  implementation 'com.android.support:design:27.1.1'
     implementation 'in.srain.cube:grid-view-with-header-footer:1.0.12'
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
 }
+
+
 apply plugin: 'realm-android'

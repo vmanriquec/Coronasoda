@@ -23,13 +23,13 @@
 
     <RelativeLayout
         android:id="@+id/relLayout1"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_width="393dp"
+        android:layout_height="51dp"
         android:background="@drawable/bordecuadradosuave"
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.823">
@@ -41,15 +41,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
 
-            />
+            app:srcCompat="@drawable/mapa" />
 
         <TextView
             android:id="@+id/direc"
-            android:layout_width="340dp"
-            android:layout_height="46dp"
+            android:layout_width="334dp"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="14dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="0dp"
 
             android:layout_toRightOf="@+id/ic_magnify"
             android:background="@android:color/transparent"
@@ -64,16 +64,16 @@
 
     <RelativeLayout
         android:id="@+id/relLayout10"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_width="393dp"
+        android:layout_height="54dp"
         android:background="@drawable/bordecuadradosuave"
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.917">
+        app:layout_constraintVertical_bias="0.913">
 
         <ImageView
             android:id="@+id/ref"
@@ -82,21 +82,21 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
 
-            />
+            app:srcCompat="@drawable/referencia" />
 
         <EditText
             android:id="@+id/referencia"
-            android:layout_width="333dp"
-            android:layout_height="46dp"
+            android:layout_width="336dp"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="5dp"
 
             android:layout_toRightOf="@+id/ic_magnify"
             android:background="@android:color/transparent"
             android:gravity="center_horizontal|center_vertical"
             android:hint="Alguna Referencia por favor."
-            android:textColor="#000"
+            android:textColor="@color/accent"
             android:textColorHint="@color/accent"
             android:textSize="14sp" />
 
@@ -107,6 +107,9 @@
         android:id="@+id/listo"
         android:layout_width="72dp"
         android:layout_height="64dp"
+        android:background="@drawable/gps"
+        android:textColor="@color/accent"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -114,12 +117,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.043" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estoy aqui"
+        android:textColor="@color/accent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.982"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
+
     <Button
         android:id="@+id/aregistro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/accent"
-        android:text="Ingresa tus datos "
+        android:text="Ahora ingresa tus datos  "
         android:textColor="@color/colortres"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

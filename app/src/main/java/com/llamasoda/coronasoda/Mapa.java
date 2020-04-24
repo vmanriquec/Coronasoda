@@ -65,8 +65,8 @@ public class Mapa extends FragmentActivity
 TextView direccion;
 EditText referencia;
 Button listo,aregistro;
-    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
-    private long FASTEST_INTERVAL = 2000; /* 2 sec */
+    //private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    //private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
 public Double longituduser;
 public Double latituduser;
@@ -85,11 +85,18 @@ LocationRequest mLocationRequest;
         listo = (Button) findViewById(R.id.listo);
         aregistro = (Button) findViewById(R.id.aregistro);
         mFusedLocationClient = getFusedLocationProviderClient(this);
+
+
+
+
+
         aregistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                guardardireccionlatitudylongitud(direccion.getText().toString(),referencia.getText().toString(),latituduser,longituduser);
+                String hh=String.valueOf(longituduser).toString();
+                String pp=String.valueOf(latituduser).toString();
+Toast.makeText(getApplication(),hh+pp,Toast.LENGTH_LONG).show();
+              guardardireccionlatitudylongitud(direccion.getText().toString(),referencia.getText().toString(),latituduser,longituduser);
                 Intent intent = new Intent(getApplicationContext(), Registrodeusuario.class);
 
                 startActivity(intent);
@@ -101,6 +108,8 @@ listo.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         startLocationUpdates();
+
+
     }
 });
     }
@@ -108,29 +117,53 @@ listo.setOnClickListener(new View.OnClickListener() {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-                mapa = googleMap;
-                mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-               // mapa.getUiSettings().setZoomControlsEnabled(true);
-                mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(Sopdapop, 21));
-               // mapa.setMyLocationEnabled(true);
-                mapa.getUiSettings().setCompassEnabled(true);
 
-        Marker marker = mapa.addMarker(new MarkerOptions()
 
-                .position(Sopdapop)
-                .title("mi casita")
-                .snippet("aqui recibire mis pedidos :)")
-                .icon(BitmapDescriptorFactory
-                        .fromResource(android.R.drawable.ic_menu_directions))
-                .anchor(0.5f, 0.5f)
-        );
 
-        mapa.setInfoWindowAdapter(new Marketclaselocal(LayoutInflater.from(getApplicationContext())));
-        marker.showInfoWindow();
+
+
+
+if(checkPermissions()){
+
+    mapa = googleMap;
+    mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    mapa.getUiSettings().setZoomControlsEnabled(true);
+    mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(Sopdapop, 21));
+  //  mapa.setMyLocationEnabled(true);
+   // mapa.getUiSettings().setCompassEnabled(true);
+
+    Marker marker = mapa.addMarker(new MarkerOptions()
+
+            .position(Sopdapop)
+            .title("mi casita")
+            .snippet("aqui recibire mis pedidos :)")
+            .icon(BitmapDescriptorFactory
+                    .fromResource(android.R.drawable.ic_menu_directions))
+            .anchor(0.5f, 0.5f)
+    );
+
+    mapa.setInfoWindowAdapter(new Marketclaselocal(LayoutInflater.from(getApplicationContext())));
+    marker.showInfoWindow();
+
+
+
+}else{
+    Toast.makeText(this, "nesecitas dar permisos de gps a la aplicacion", Toast.LENGTH_SHORT).show();
+}
+
+
+
+
+
+
+
+
+
     }
     @Override
     public void onMapClick(LatLng latLng) {
         mapa.clear();
+
         Marker markerName = null;
         String cityName = null;
         Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
@@ -151,6 +184,7 @@ listo.setOnClickListener(new View.OnClickListener() {
             }
         }
         catch (IOException e) {
+           // Toast.makeText(this,"presionaste"+e.toString().trim(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
        }
     }
@@ -160,8 +194,8 @@ listo.setOnClickListener(new View.OnClickListener() {
         //////////////////////////////////7777
         //////con que frecuencia se actualiza la ubicacion /////
       mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-       mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+      // mLocationRequest.setInterval(UPDATE_INTERVAL);
+       // mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 
         // Create LocationSettingsRequest object using location request
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
@@ -189,11 +223,13 @@ listo.setOnClickListener(new View.OnClickListener() {
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-mapa.clear();;
+       // Toast.makeText(this,"longitud"+String.valueOf(latLng.latitude)+"longitud:  "+String.valueOf(latLng.longitude),Toast.LENGTH_LONG).show();
+
+        mapa.clear();;
 
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 21));
-        mapa.setMyLocationEnabled(true);
-        mapa.getUiSettings().setCompassEnabled(true);
+       // mapa.setMyLocationEnabled(true);
+        //mapa.getUiSettings().setCompassEnabled(true);
 
         longituduser=latLng.longitude;
         latituduser=latLng.latitude;
@@ -228,6 +264,8 @@ mapa.clear();;
             }
         }
         catch (IOException e) {
+          //  Toast.makeText(this,"presionaste"+e.toString().trim(),Toast.LENGTH_LONG).show();
+
             e.printStackTrace();
         }
 

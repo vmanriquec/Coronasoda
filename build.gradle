@@ -32,6 +32,17 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '26.1.0'
+            }
+        }
+    }
+}
 subprojects {
     project.configurations.all {
         resolutionStrategy.eachDependency { details ->
@@ -41,4 +52,6 @@ subprojects {
             }
         }
     }
+    
+    
 }

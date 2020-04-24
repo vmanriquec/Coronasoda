@@ -174,4 +174,10 @@ public class Usuariocompleto {
         this.latitud=latitud;
         this.referencia=referencia;
     }
+
+    public Usuariocompleto(){
+
+
+
+    }
 }

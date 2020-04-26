@@ -118,8 +118,11 @@ dependencies {
 
     //  implementation 'com.android.support:design:27.1.1'
     implementation 'in.srain.cube:grid-view-with-header-footer:1.0.12'
-    compile 'com.daimajia.easing:library:2.0@aar'
-    compile 'com.daimajia.androidanimations:library:2.3@aar'
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+
+
+
 }
 
 

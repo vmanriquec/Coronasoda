@@ -25,7 +25,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.llamasoda.coronasoda.Realm.Crudpedido;
 import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
+import com.llamasoda.coronasoda.Realm.PedidoRealm;
 import com.llamasoda.coronasoda.adapter.Adaptadordialogo;
 import com.llamasoda.coronasoda.adapter.Adaptadorproductos;
 import com.llamasoda.coronasoda.modelo.Datostarjetadialogo;
@@ -83,6 +85,7 @@ public class Listaparaseleccionar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listaparaseleccionar);
         cargarbarradeabajo();
+
         TextView fechadehoy = (TextView) findViewById(R.id.tres);
         TextView usuariotxt = (TextView) findViewById(R.id.uno);
         TextView almacentxt = (TextView) findViewById(R.id.dos);
@@ -102,13 +105,18 @@ public class Listaparaseleccionar extends AppCompatActivity {
         String usuarior = prefs.getString("nombreusuariof", "");
         String almacennombre = prefs.getString("almacenactivosf", "");
         idalmacen = prefs.getString("idalmacenactivosf", "");
-        String usuariostring = prefs.getString("idusuario", "");
+
 
         usuariotxt.setText(usuarior);
         almacentxt.setText(almacennombre);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDateandTime = sdf.format(new Date());
         fechadehoy.setText(currentDateandTime);
+
+
+        crearpedidoinicial(1,0.0,currentDateandTime,Integer.parseInt(idalmacen));
+
+
 
         ListView lista = (ListView) findViewById(R.id.listainicio);
         recyclerproducto = (RecyclerView) findViewById(R.id.recyclerlistado);
@@ -320,5 +328,21 @@ cargarbarradeabajo();
 
     }
 
+    public final static void crearpedidoinicial(int idusuario,Double totalpedido,String fechapedido,int idalmacen){
+
+
+        Realm pedido = Realm.getDefaultInstance();
+        pedido.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm pedido) {
+                int index = Crudpedido.calculateIndex();
+                PedidoRealm realmDetallepedidorealm = pedido.createObject(PedidoRealm.class, index);
+                realmDetallepedidorealm.setIdusuario(idusuario);
+                realmDetallepedidorealm.setTotalpedido(0.0);
+                realmDetallepedidorealm.setFechapedido(fechapedido);
+                realmDetallepedidorealm.setIdalmacen(idalmacen);
+            }
+        });
+    }
 
 }

@@ -23,20 +23,14 @@ public class Splash extends AppCompatActivity {
 
         prefs = getApplication().getSharedPreferences(FileName, Context.MODE_PRIVATE);
 
-
-
-
-
-        String telefonoguardado = prefs.getString("telefono", "");
-        String idfirebase = prefs.getString("idfirebase", "mi fire");
-        String direccione=prefs.getString("direccion", "");
-        String referencias=prefs.getString("referencia","");
-        String latitud=prefs.getString("latitud","");
-        String longitud=prefs.getString("longitud","");
         String nombre=prefs.getString("nombreusuariof","");
 
 
         if (nombre.equals("")){
+            YoYo.with(Techniques.Landing.getAnimator())
+                    .duration(4700)
+                    .repeat(2)
+                    .playOn(findViewById(R.id.intro));
             Intent i= new Intent(this,Nuevologin.class);
             startActivity(i);
 
@@ -49,9 +43,8 @@ public class Splash extends AppCompatActivity {
         }
 
 
-        YoYo.with(Techniques.ZoomOutLeft)
-                .duration(700)
-                .repeat(5)
-                .playOn(findViewById(R.id.intro));
+
     }
+
+
 }

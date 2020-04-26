@@ -18,6 +18,8 @@ public class Detallepedidorealm extends RealmObject {
     private int idproductorealm;
 private String comentarioacocina;
 
+
+
     public String getComentarioacocina() {
         return comentarioacocina;
     }

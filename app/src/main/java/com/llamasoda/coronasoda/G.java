@@ -80,10 +80,7 @@ int idusuario;
 
         //datos desde atras
         prefs = getApplicationContext().getSharedPreferences(FileName, Context.MODE_PRIVATE);
-String usuariostring   =prefs.getString("idusuario","");
-String idalamce=prefs.getString("idalmacenactivosf","");
-        idusuario=Integer.parseInt(usuariostring);
-        Intent myIntent = getIntent();
+       Intent myIntent = getIntent();
         String nombredeproductoseleccionado = myIntent.getStringExtra("nombredeproductoseleccionado"); // will return "FirstKeyValue"
         String preciodeproductoseleccionado= myIntent.getStringExtra("preciodeproductoseleccionado"); // will return "SecondKeyValue"
  idproductoseleccionado= myIntent.getStringExtra("idproductoseleccionado"); // will return "SecondKeyValue"
@@ -734,20 +731,10 @@ Double zz,ll=0.0;
         return results;
     }
 
-
-
-
-
-
-
-
     public final static int capturariddedetalledeprodysubtotal(String producto, String total) {
 int ff = 0;
         Realm pedido = Realm.getDefaultInstance();
         pedido.beginTransaction();
-
-
-
         Detallepedidorealm pedidoRealm = pedido.where(Detallepedidorealm.class).
                 equalTo("nombreproductorealm",producto).
                 equalTo("subtotal",total)
@@ -758,13 +745,6 @@ int ff = 0;
 
 
     }
-
-
-
-
-
-
-
 
     public final static List<AdicionalRealm> eliminarunTotaladicional(int ido) {
         Realm pedido = Realm.getDefaultInstance();

@@ -8,29 +8,33 @@
 
     <TextView
         android:id="@+id/cabecera"
-        android:layout_width="0dp"
-        android:layout_height="18dp"
-        android:background="@color/accent"
+        android:layout_width="399dp"
+        android:layout_height="47dp"
+        android:background="@drawable/button_background"
 
+        android:gravity="center_vertical"
+        android:text="Completa estos datos"
         android:textAlignment="center"
-        android:textColor="@color/background_material_light"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
+        android:textColor="@color/coloruno"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintVertical_bias="0.007"
+        tools:ignore="RtlCompat" />
 
     <LinearLayout
         android:id="@+id/linearLayout7"
-        android:layout_width="383dp"
+        android:layout_width="351dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35">
 
         <LinearLayout
             android:layout_width="60dp"
@@ -206,16 +210,15 @@
                 android:layout_height="61dp"
                 android:orientation="vertical">
 
-                <EditText
+                    <EditText
                     android:id="@+id/contra"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ems="10"
                     android:hint="Contraseña"
-                    android:inputType="textPassword"
+
                     android:paddingLeft="10dp"
                     android:textColorHint="@color/accent" />
-
 
             </LinearLayout>
 
@@ -231,7 +234,7 @@
                     android:layout_height="match_parent"
                     android:ems="10"
                     android:hint="Reescribe tu Contraseña"
-                    android:inputType="textPassword"
+
                     android:paddingLeft="10dp"
                     android:textColorHint="@color/accent" />
             </LinearLayout>
@@ -241,19 +244,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/mapa"
-                    android:layout_width="match_parent"
-                    android:layout_height="61dp"
-                    android:background="@drawable/button_background"
-                    android:text=" Primero busca tu direccion aqui"
-                    android:textColor="@color/accent_material_light"
-                    android:textColorHint="@color/accent_material_light" />
-
                 <TextView
                     android:id="@+id/dire"
-                    android:layout_width="323dp"
-                    android:layout_height="53dp"
+                    android:layout_width="312dp"
+                    android:layout_height="68dp"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:gravity="center_horizontal|left|center_vertical"
                     android:hint="Tu direccion Verificada"
@@ -267,6 +261,37 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:text="Selecciona  tu ciudad"
+        android:textColor="@color/colorprincipal"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.783" />
+
+    <Spinner
+        android:id="@+id/spinnerio2"
+        android:layout_width="165dp"
+        android:layout_height="33dp"
+        android:layout_below="@+id/materialTextField2"
+        android:layout_alignEnd="@+id/materialTextField2"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.898"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.78"
+        tools:ignore="UnknownId" />
+
     <Button
         android:id="@+id/registrusuario"
         android:layout_width="0dp"
@@ -275,7 +300,7 @@
         android:layout_weight="1"
         android:background="@drawable/btn_orange_2"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Registrate"
+        android:text="Lsto"
         android:textColor="@color/colortres"
         android:textSize="18sp"
         android:textStyle="bold"

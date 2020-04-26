@@ -90,6 +90,8 @@ static class AdaptadorViewHolder extends RecyclerView.ViewHolder{
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, getItemCount());
                 mainContext.recargartotalesisisomos();
+mainContext.calculatotal();
+
 
 
 

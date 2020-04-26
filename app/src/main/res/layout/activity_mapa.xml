@@ -7,13 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".Mapa">
 
-
-
     <fragment
         android:id="@+id/mapa"
         class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="409dp"
-        android:layout_height="547dp"
+        android:layout_width="404dp"
+        android:layout_height="622dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.285"
@@ -22,75 +20,28 @@
         app:layout_constraintVertical_bias="0.01" />
 
     <RelativeLayout
-        android:id="@+id/relLayout1"
-        android:layout_width="393dp"
-        android:layout_height="51dp"
-        android:background="@drawable/bordecuadradosuave"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.823">
-
-        <ImageView
-            android:id="@+id/ic_magnify"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-
-            app:srcCompat="@drawable/mapa" />
-
-        <TextView
-            android:id="@+id/direc"
-            android:layout_width="334dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="0dp"
-
-            android:layout_toRightOf="@+id/ic_magnify"
-            android:background="@android:color/transparent"
-            android:gravity="center_horizontal|center_vertical"
-            android:hint="Tu direccion"
-            android:textColor="@color/accent"
-            android:textColorHint="@color/accent"
-            android:textSize="14sp" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/relLayout10"
-        android:layout_width="393dp"
+        android:layout_width="0dp"
         android:layout_height="54dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/bordecuadradosuave"
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913">
-
-        <ImageView
-            android:id="@+id/ref"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-
-            app:srcCompat="@drawable/referencia" />
+        app:layout_constraintVertical_bias="0.929">
 
         <EditText
             android:id="@+id/referencia"
-            android:layout_width="336dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="0dp"
 
             android:layout_toRightOf="@+id/ic_magnify"
             android:background="@android:color/transparent"
@@ -112,10 +63,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.988"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.043" />
+        app:layout_constraintVertical_bias="0.589" />
 
     <TextView
         android:id="@+id/textView2"
@@ -126,17 +77,17 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.982"
+        app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.641" />
 
     <Button
         android:id="@+id/aregistro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/accent"
-        android:text="Ahora ingresa tus datos  "
+        android:text="Siguiente"
         android:textColor="@color/colortres"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -144,6 +95,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/direc"
+        android:layout_width="375dp"
+        android:layout_height="50dp"
+
+        android:background="@drawable/fondoparabuscar"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="Tu direccion"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/accent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

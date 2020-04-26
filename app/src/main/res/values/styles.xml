@@ -9,6 +9,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+
+
+
+    <style name="TextLabelSNA" parent="Widget.Design.TextInputLayout">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/accent</item>
+        <item name="android:textSize">16sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/accent_material_dark</item>
+        <item name="colorControlNormal">@color/abc_search_url_text_normal</item>
+        <item name="colorControlActivated">@color/colorprincipalamarillo</item>
+    </style>
     <style name="StyleTheme" parent="Theme.AppCompat">
         <item name="bs_bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
     </style>

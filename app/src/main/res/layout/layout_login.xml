@@ -24,10 +24,10 @@
         android:layout_height="43dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintHorizontal_bias="0.888"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.67"
+        app:layout_constraintVertical_bias="0.617"
         app:srcCompat="@drawable/motodelivery" />
 
     <TextView
@@ -38,16 +38,17 @@
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.265"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667" />
+        app:layout_constraintVertical_bias="0.614" />
 
     <LinearLayout
         android:id="@+id/linearLayout8"
-        android:layout_width="327dp"
-        android:layout_height="66dp"
+        android:layout_width="390dp"
+        android:layout_height="72dp"
         android:background="@drawable/botondegradado"
+        android:foregroundGravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,8 +64,8 @@
             app:srcCompat="@drawable/common_full_open_on_phone" />
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            android:id="@+id/logincelu"
+            android:layout_width="326dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@color/trans"

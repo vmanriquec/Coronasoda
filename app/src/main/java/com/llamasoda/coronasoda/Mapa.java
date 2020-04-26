@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,6 +50,7 @@ import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.Manifest.*;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
@@ -58,20 +60,22 @@ public class Mapa extends FragmentActivity
     private static final int REQUEST_FINE_LOCATION = 0;
     String FileName = "myfile";
     SharedPreferences prefs;
-
+    String apiKey = "MY API KEY";
     private GoogleMap mapa;
     private final LatLng Sopdapop = new LatLng(-11.495692495131408, -77.208248);
     private FusedLocationProviderClient mFusedLocationClient;
-TextView direccion;
-EditText referencia;
-Button listo,aregistro;
+    TextView direccion;
+    EditText referencia;
+    Button listo, aregistro;
     //private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
     //private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
-public Double longituduser;
-public Double latituduser;
+    public Double longituduser;
+    public Double latituduser;
 
-LocationRequest mLocationRequest;
+
+    LocationRequest mLocationRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,87 +83,82 @@ LocationRequest mLocationRequest;
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.mapa);
         mapFragment.getMapAsync(this);
-        referencia=(EditText) findViewById(R.id.referencia);
+        referencia = (EditText) findViewById(R.id.referencia);
 
         direccion = (TextView) findViewById(R.id.direc);
         listo = (Button) findViewById(R.id.listo);
         aregistro = (Button) findViewById(R.id.aregistro);
         mFusedLocationClient = getFusedLocationProviderClient(this);
 
-
-
+//        checkRunTimePermission();
 
 
         aregistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String hh=String.valueOf(longituduser).toString();
-                String pp=String.valueOf(latituduser).toString();
-Toast.makeText(getApplication(),hh+pp,Toast.LENGTH_LONG).show();
-              guardardireccionlatitudylongitud(direccion.getText().toString(),referencia.getText().toString(),latituduser,longituduser);
-                Intent intent = new Intent(getApplicationContext(), Registrodeusuario.class);
+                if (direccion.getText().toString().equals("")){
 
-                startActivity(intent);
+
+                    Toast.makeText(getApplication(),"Debes seleccionar una direccion y activar tu gps.",Toast.LENGTH_LONG).show();
+
+
+                }else{
+
+                    String hh = String.valueOf(longituduser).toString();
+                    String pp = String.valueOf(latituduser).toString();
+                    Toast.makeText(getApplication(), hh + pp, Toast.LENGTH_LONG).show();
+                    guardardireccionlatitudylongitud(direccion.getText().toString(), referencia.getText().toString(), latituduser, longituduser);
+                    Intent intent = new Intent(getApplicationContext(), Registrodeusuario.class);
+
+                    startActivity(intent);
+
+
+                }
+
 
             }
 
         });
-listo.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        startLocationUpdates();
+        listo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLocationUpdates();
 
 
+            }
+        });
     }
-});
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+checkPermissions();
+            Toast.makeText(this, "Activa tu gps por favor", Toast.LENGTH_LONG).show();
+            mapa = googleMap;
+            mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mapa.getUiSettings().setZoomControlsEnabled(true);
+            mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(Sopdapop, 21));
+            //  mapa.setMyLocationEnabled(true);
+            // mapa.getUiSettings().setCompassEnabled(true);
+
+            Marker marker = mapa.addMarker(new MarkerOptions()
+
+                    .position(Sopdapop)
+                    .title("mi casita")
+                    .snippet("aqui recibire mis pedidos :)")
+                    .icon(BitmapDescriptorFactory
+                            .fromResource(android.R.drawable.ic_menu_directions))
+                    .anchor(0.5f, 0.5f)
+            );
+
+            mapa.setInfoWindowAdapter(new Marketclaselocal(LayoutInflater.from(getApplicationContext())));
+            marker.showInfoWindow();
+
+
+        }
 
 
 
 
-
-
-if(checkPermissions()){
-
-    mapa = googleMap;
-    mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-    mapa.getUiSettings().setZoomControlsEnabled(true);
-    mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(Sopdapop, 21));
-  //  mapa.setMyLocationEnabled(true);
-   // mapa.getUiSettings().setCompassEnabled(true);
-
-    Marker marker = mapa.addMarker(new MarkerOptions()
-
-            .position(Sopdapop)
-            .title("mi casita")
-            .snippet("aqui recibire mis pedidos :)")
-            .icon(BitmapDescriptorFactory
-                    .fromResource(android.R.drawable.ic_menu_directions))
-            .anchor(0.5f, 0.5f)
-    );
-
-    mapa.setInfoWindowAdapter(new Marketclaselocal(LayoutInflater.from(getApplicationContext())));
-    marker.showInfoWindow();
-
-
-
-}else{
-    Toast.makeText(this, "nesecitas dar permisos de gps a la aplicacion", Toast.LENGTH_SHORT).show();
-}
-
-
-
-
-
-
-
-
-
-    }
     @Override
     public void onMapClick(LatLng latLng) {
         mapa.clear();
@@ -170,32 +169,50 @@ if(checkPermissions()){
         List<Address> addresses;
         try {
             addresses = gcd.getFromLocation(latLng.latitude,
-                  latLng.longitude, 1);
+                    latLng.longitude, 1);
             if (addresses.size() > 0) {
                 System.out.println(addresses.get(0).getAddressLine(0));
-                longituduser=latLng.longitude;
-                latituduser=latLng.latitude;
+                longituduser = latLng.longitude;
+                latituduser = latLng.latitude;
                 cityName = addresses.get(0).getAddressLine(0);
-                 markerName = mapa.addMarker
-                        (new MarkerOptions().position(latLng).
-                                title("en esta direccion recibire mis pedidos ")
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                               direccion.setText(cityName);
+                direccion.setText(cityName);
+                if (direccion.getText().equals(""))
+                {
+                    Toast.makeText(this,"Activa tu gps para ubicarte por favor",Toast.LENGTH_LONG).show();
+                }else{
+
+
+                    Marker marker = mapa.addMarker(new MarkerOptions()
+
+                            .position(latLng)
+                            .title("mi casita")
+                            .snippet("aqui recibire mis pedidos :)")
+                            .icon(BitmapDescriptorFactory
+                                    .fromResource(android.R.drawable.ic_menu_directions))
+                            .anchor(0.5f, 0.5f)
+                    );
+
+                    mapa.setInfoWindowAdapter(new markerclase(LayoutInflater.from(getApplicationContext())));
+                    marker.showInfoWindow();
+
+
+                }
+
             }
-        }
-        catch (IOException e) {
-           // Toast.makeText(this,"presionaste"+e.toString().trim(),Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            // Toast.makeText(this,"presionaste"+e.toString().trim(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
-       }
+        }
     }
+
     protected void startLocationUpdates() {
         // Create the location request to start receiving updates
         mLocationRequest = new LocationRequest();
         //////////////////////////////////7777
         //////con que frecuencia se actualiza la ubicacion /////
-      mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-      // mLocationRequest.setInterval(UPDATE_INTERVAL);
-       // mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        // mLocationRequest.setInterval(UPDATE_INTERVAL);
+        // mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 
         // Create LocationSettingsRequest object using location request
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
@@ -223,16 +240,17 @@ if(checkPermissions()){
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-       // Toast.makeText(this,"longitud"+String.valueOf(latLng.latitude)+"longitud:  "+String.valueOf(latLng.longitude),Toast.LENGTH_LONG).show();
+        // Toast.makeText(this,"longitud"+String.valueOf(latLng.latitude)+"longitud:  "+String.valueOf(latLng.longitude),Toast.LENGTH_LONG).show();
 
-        mapa.clear();;
+        mapa.clear();
+        ;
 
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 21));
-       // mapa.setMyLocationEnabled(true);
+        // mapa.setMyLocationEnabled(true);
         //mapa.getUiSettings().setCompassEnabled(true);
 
-        longituduser=latLng.longitude;
-        latituduser=latLng.latitude;
+        longituduser = latLng.longitude;
+        latituduser = latLng.latitude;
         Marker marker = mapa.addMarker(new MarkerOptions()
 
                 .position(latLng)
@@ -256,26 +274,25 @@ if(checkPermissions()){
             if (addresses.size() > 0) {
                 System.out.println(addresses.get(0).getAddressLine(0));
 
-               String  cityName = addresses.get(0).getAddressLine(0);
+                String cityName = addresses.get(0).getAddressLine(0);
 
                 direccion.setText(cityName);
 
+                if (direccion.getText().equals(""))
+                {
+                    Toast.makeText(this,"Activa tu gps para ubicarte por favor",Toast.LENGTH_LONG).show();
+                }else{
+
+
+
+                }
 
             }
-        }
-        catch (IOException e) {
-          //  Toast.makeText(this,"presionaste"+e.toString().trim(),Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            //  Toast.makeText(this,"presionaste"+e.toString().trim(),Toast.LENGTH_LONG).show();
 
             e.printStackTrace();
         }
-
-
-
-
-
-
-
-
 
 
     }
@@ -305,35 +322,41 @@ if(checkPermissions()){
     }
 
 
-
-
     private boolean checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) &&
+        (ContextCompat.checkSelfPermission(this, permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) ){
+
+
             return true;
+
         } else {
-            requestPermissions();
-            return false;
+     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_FINE_LOCATION);
+                return false;
+
+            }
+
         }
+
+    private void revaamapa() {
+        Intent intent = new Intent(getApplicationContext(), Mapa.class);
+
+        startActivity(intent);
+
     }
 
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_FINE_LOCATION);
-    }
 
-
-
-    public   void guardardireccionlatitudylongitud(String direccion,String referencia,Double latitud,Double longitud){
-        SharedPreferences sharedPreferences =getSharedPreferences(FileName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putString("direccion",direccion);
-        editor.putString("referencia",referencia);
-        editor.putString("latitud",String.valueOf(latitud));
-        editor.putString("longitud",String.valueOf(longitud));
+    public void guardardireccionlatitudylongitud(String direccion, String referencia, Double latitud, Double longitud) {
+        SharedPreferences sharedPreferences = getSharedPreferences(FileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("direccion", direccion);
+        editor.putString("referencia", referencia);
+        editor.putString("latitud", String.valueOf(latitud));
+        editor.putString("longitud", String.valueOf(longitud));
         editor.commit();
 
     }
-    }
+
+
+}
 

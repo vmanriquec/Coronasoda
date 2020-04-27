@@ -5,6 +5,31 @@ public class DetallepedidoRealmFirebase {
     public int id;
     public int ojo;
 
+    public DetallepedidoRealmFirebase(int id, int ojo, String subtotal, String idpedido, int cantidadrealm, Double precventarealm, String nombreproductorealm, String imagenrealm, int idalmacenrealm, int idproductorealm, String comentarioacocina) {
+        this.id = id;
+        this.ojo = ojo;
+        this.subtotal = subtotal;
+        this.idpedido = idpedido;
+        this.cantidadrealm = cantidadrealm;
+        this.precventarealm = precventarealm;
+        this.nombreproductorealm = nombreproductorealm;
+        this.imagenrealm = imagenrealm;
+        this.idalmacenrealm = idalmacenrealm;
+        this.idproductorealm = idproductorealm;
+        this.comentarioacocina = comentarioacocina;
+    }
+
+    private String subtotal;
+    private String idpedido;
+    private int cantidadrealm;
+    private Double precventarealm;
+    private String nombreproductorealm;
+    private String imagenrealm;
+    private int idalmacenrealm;
+    private int idproductorealm;
+    private String comentarioacocina;
+
+
     public int getId() {
         return id;
     }
@@ -29,11 +54,11 @@ public class DetallepedidoRealmFirebase {
         this.subtotal = subtotal;
     }
 
-    public int getIdpedido() {
+    public String getIdpedido() {
         return idpedido;
     }
 
-    public void setIdpedido(int idpedido) {
+    public void setIdpedido(String idpedido) {
         this.idpedido = idpedido;
     }
 
@@ -92,34 +117,12 @@ public class DetallepedidoRealmFirebase {
     public void setComentarioacocina(String comentarioacocina) {
         this.comentarioacocina = comentarioacocina;
     }
-
-    public DetallepedidoRealmFirebase(int id, int ojo, String subtotal, int idpedido, int cantidadrealm, Double precventarealm, String nombreproductorealm, String imagenrealm, int idalmacenrealm, int idproductorealm, String comentarioacocina) {
-        this.id = id;
-        this.ojo = ojo;
-        this.subtotal = subtotal;
-        this.idpedido = idpedido;
-        this.cantidadrealm = cantidadrealm;
-        this.precventarealm = precventarealm;
-        this.nombreproductorealm = nombreproductorealm;
-        this.imagenrealm = imagenrealm;
-        this.idalmacenrealm = idalmacenrealm;
-        this.idproductorealm = idproductorealm;
-        this.comentarioacocina = comentarioacocina;
-    }
-
-    private String subtotal;
-    private int idpedido;
-    private int cantidadrealm;
-    private Double precventarealm;
-    private String nombreproductorealm;
-    private String imagenrealm;
-    private int idalmacenrealm;
-    private int idproductorealm;
-    private String comentarioacocina;
     public DetallepedidoRealmFirebase(){
 
 
 
     }
+
+
 
 }

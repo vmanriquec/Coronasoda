@@ -718,18 +718,7 @@ Double zz,ll=0.0;
 
 
 
-    public final static List<CremaRealm> eliminaraunTotalcrema(int ido) {
-        Realm pedido = Realm.getDefaultInstance();
 
-        RealmResults<CremaRealm> results =
-                pedido.where(CremaRealm.class).
-                        equalTo("id", ido)
-                        .findAll();
-        results.toString().trim();
-        results.deleteAllFromRealm() ;
-        pedido.commitTransaction();
-        return results;
-    }
 
     public final static int capturariddedetalledeprodysubtotal(String producto, String total) {
 int ff = 0;
@@ -745,7 +734,18 @@ int ff = 0;
 
 
     }
+    public final static List<CremaRealm> eliminaraunTotalcrema(int ido) {
+        Realm pedido = Realm.getDefaultInstance();
 
+        RealmResults<CremaRealm> results =
+                pedido.where(CremaRealm.class).
+                        equalTo("id", ido)
+                        .findAll();
+        results.toString().trim();
+        results.deleteAllFromRealm() ;
+        pedido.commitTransaction();
+        return results;
+    }
     public final static List<AdicionalRealm> eliminarunTotaladicional(int ido) {
         Realm pedido = Realm.getDefaultInstance();
 
@@ -773,6 +773,61 @@ int ff = 0;
         pedido.commitTransaction();
         return results;
     }
+
+
+
+
+
+    public final static List<CremaRealm> Eliminartotalcremas() {
+        Realm pedido = Realm.getDefaultInstance();
+
+        RealmResults<CremaRealm> results =
+                pedido.where(CremaRealm.class)
+
+                        .findAll();
+
+        results.deleteAllFromRealm() ;
+        pedido.commitTransaction();
+        return results;
+    }
+    public final static List<AdicionalRealm> Eliminartotaladicionals() {
+        Realm pedido = Realm.getDefaultInstance();
+
+        RealmResults<AdicionalRealm> results =
+                pedido.where(AdicionalRealm.class)
+
+                        .findAll();
+
+        pedido.beginTransaction();
+        results.deleteAllFromRealm();     // App crash
+        pedido.commitTransaction();
+        return results;
+    }
+
+    public final static List<Detallepedidorealm> Eliminartotaldetalles() {
+        Realm pedido = Realm.getDefaultInstance();
+
+        RealmResults<Detallepedidorealm> results =
+                pedido.where(Detallepedidorealm.class)
+                                               .findAll();
+
+        pedido.beginTransaction();
+        results.deleteAllFromRealm();     // App crash
+        pedido.commitTransaction();
+        return results;
+    }
+    public final static List<PedidoRealm> Eliminartotalpedidos() {
+        Realm pedido = Realm.getDefaultInstance();
+
+        RealmResults<PedidoRealm> results =
+                pedido.where(PedidoRealm.class)
+                        .findAll();
+        pedido.beginTransaction();
+        results.deleteAllFromRealm();     // App crash
+        return results;
+    }
+
+
 
 
     @Override

@@ -107,41 +107,30 @@ pidelo=(Button) findViewById(R.id.irafirebase);
                   public void onClick(View v) {
 
                       EditText apagar=(EditText) findViewById(R.id.dacliente);
-
-
-
-
-
                       if(pago.isChecked()){
-
                           guardarcuantopagacliente(totalpedidoapedir.getText().toString(),"0",totalpedidoapedir.getText().toString());
                           apagar.setText("");
                           apagar.setEnabled(false);
                           apagar.setVisibility(View.INVISIBLE);
                           apagar.setActivated(false);
-
                            enviarfirebase();
-
-
                       }else{
-
                           apagar.setVisibility(View.VISIBLE);
                           apagar.setEnabled(true);
                           apagar.setActivated(true);
-                          Double gi=Double.parseDouble(totalpedidoapedir.getText().toString());
-                          Double g=Double.parseDouble(apagar.getText().toString());
-                          if(g.equals("")){
 
+                          Double gi=Double.parseDouble(totalpedidoapedir.getText().toString());
+
+                          if(apagar.getText().toString().equals("")){
 
                               Toast.makeText(getApplication(),"Debes pagar con algo",Toast.LENGTH_LONG).show();
-
                           }else{
+                              Double g=Double.parseDouble(apagar.getText().toString());
 
                               if (g<gi){
 
                                   Toast.makeText(getApplication(),"Estas pagando menos del pedido",Toast.LENGTH_LONG).show();
                                   apagar.setText("");
-
                               }
                               else{
                                   guardarcuantopagacliente(apagar.getText().toString(),String.valueOf(Double.parseDouble(apagar.getText().toString())-Double.parseDouble(totalpedidoapedir.getText().toString())),totalpedidoapedir.getText().toString());

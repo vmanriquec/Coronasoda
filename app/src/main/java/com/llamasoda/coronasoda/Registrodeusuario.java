@@ -111,12 +111,7 @@ direccion.setText(direccione);
                     guardarsharesinfacebook( nombres.getText().toString(),contrasena.getText().toString(),telefonoguardado,idfirebase);
 
                     String idalmacen=prefs.getString("idalmacenactivosf","");
-
-
-
-
-
-                    Usuariocompleto nuevousuario = new Usuariocompleto(nombres.getText().toString() ,
+   Usuariocompleto nuevousuario = new Usuariocompleto(nombres.getText().toString() ,
                             apellidos.getText().toString(),contrasena.getText().toString(),
                             "sin imagen","sin idfacebook","sin nombre ",
                             idfirebase,telefonoguardado,contrasena.getText().toString(), correo.getText().toString(),direccione,1,Integer.valueOf(idalmacen),latitud,longitud,referencias);
@@ -124,12 +119,16 @@ direccion.setText(direccione);
                     DatabaseReference reference=database.getReference(USUARIOf);
                     reference.child(idfirebase).setValue(nuevousuario);
 
+if(idalmacen.equals("")){
+
+    new cargaralmacen().execute();
+}
+
+else{
+    new grabausuario().execute(nuevousuario);
 
 
-
-
-
-                    new grabausuario().execute(nuevousuario);
+}
 
 //createDialog(nombres.getText().toString(),direccione);
                     irapedir();
@@ -322,7 +321,7 @@ Toast.makeText(getApplication(),"Las contraseas no son iguales",Toast.LENGTH_LON
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pdLoading.setMessage("\tCargando Almacenes");
+            pdLoading.setMessage("\tCargando Locales disponibles");
             pdLoading.setCancelable(false);
             pdLoading.show();
 

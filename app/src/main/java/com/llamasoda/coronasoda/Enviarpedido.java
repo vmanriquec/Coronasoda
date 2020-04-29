@@ -1,15 +1,22 @@
 package com.llamasoda.coronasoda;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,6 +32,8 @@ import com.llamasoda.coronasoda.Realm.DetallepedidoRealmFirebase;
 import com.llamasoda.coronasoda.Realm.Detallepedidorealm;
 import com.llamasoda.coronasoda.Realm.PedidoRealm;
 import com.llamasoda.coronasoda.Realm.PedidoRealmFirebase;
+import com.llamasoda.coronasoda.adapter.Adaptadordialogo;
+import com.llamasoda.coronasoda.adapter.Adaptadorparaverenviarpedidos;
 import com.llamasoda.coronasoda.modelo.Usuariocompleto;
 
 import java.io.BufferedReader;
@@ -53,23 +62,73 @@ public class Enviarpedido extends AppCompatActivity {
     private static final String FADICIONAL = "FADICIONAL";
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
-Button limpiar;
+Button limpiar,wasap;
+RecyclerView lista;
+TextView nombre,direccion,referencia,total,cunatopaga,vueltoc;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enviarpedido);
+        Realm.init(getApplicationContext());
+
         prefs = getApplication().getSharedPreferences(FileName, Context.MODE_PRIVATE);
-        almacen = prefs.getString("idalmacenactivosf", "");
+       almacen = prefs.getString("idalmacenactivosf", "");
         limpiar=(Button) findViewById(R.id.limpiartodo) ;
+        wasap=(Button)findViewById(R.id.wasap);
+       lista=(RecyclerView) findViewById(R.id.detalle);
+nombre=(TextView) findViewById(R.id.usuario);
+        direccion=(TextView) findViewById(R.id.direccion);
+        referencia=(TextView) findViewById(R.id.referencia);
+        total=(TextView) findViewById(R.id.totalapagar);
+        cunatopaga=(TextView) findViewById(R.id.cuantopagacliente);
+        vueltoc=(TextView) findViewById(R.id.vuelto);
+
 limpiar.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
+
         borrartodo();
+        Intent i = new Intent(getApplicationContext(), Listaparaseleccionar.class);
+        startActivity(i);
+
     }
 });
 
-        escribiren(0);
+
+
+        prefs = getApplication().getSharedPreferences(FileName, Context.MODE_PRIVATE);
+        String nombreusuarioff = prefs.getString("nombreusuariof", "");
+        String estadipedido = prefs.getString("estadopedido", "");
+
+
+        nombre.setText(nombreusuarioff);
+
+        wasap.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+
+
+        Intent sendIntent = new Intent("android.intent.action.MAIN");
+        sendIntent.setComponent(new ComponentName("com.whatsapp","com.whatsapp.Conversation"));
+        sendIntent.putExtra("jid",     PhoneNumberUtils.stripSeparators("+910260813")+"@s.whatsapp.net");//phone number without "+" prefix
+
+        startActivity(sendIntent);
+    }
+});
+     if(estadipedido.equals("")){
+
+
+
+         escribiren(0);
+         mostrartodo();
+         guardarestadodeunpedido("transito");
+     }else{
+
+         mostrartodo();
+
+     }
+
     }
 
 
@@ -86,6 +145,7 @@ limpiar.setOnClickListener(new View.OnClickListener() {
         return results;
     }
 
+
     public final static List<AdicionalRealm> todoadicional(int ido) {
         Realm pedido = Realm.getDefaultInstance();
 
@@ -99,18 +159,7 @@ limpiar.setOnClickListener(new View.OnClickListener() {
         return results;
     }
 
-    public final static List<Detallepedidorealm> tododetalle(int ido) {
-        Realm pedido = Realm.getDefaultInstance();
 
-        RealmResults<Detallepedidorealm> results =
-                pedido.where(Detallepedidorealm.class).
-                        equalTo("id", ido)
-                        .findAll();
-        results.toString().trim();
-
-        pedido.commitTransaction();
-        return results;
-    }
 
 
     private void escribiren(int id) {
@@ -127,12 +176,9 @@ limpiar.setOnClickListener(new View.OnClickListener() {
         String montocosto = prefs.getString("montocosto", "");
         String totalpedido = prefs.getString("totalpedido", "");
         String nombreusuariof = prefs.getString("nombreusuariof", "");
-
-
         pagocliente = prefs.getString("cuantopagacliente", "");
         vuelto = prefs.getString("vuelto", "");
-
-
+        nombre.setText(nombreusuariof);
         Realm pedido = Realm.getDefaultInstance();
 
         ArrayList<PedidoRealmFirebase> todoslospedidos = new ArrayList<>();
@@ -187,7 +233,11 @@ limpiar.setOnClickListener(new View.OnClickListener() {
 
             new grabarpedido().execute(prf);
 
-
+            direccion.setText(prf.getDireccionallevar().toString());
+            referencia.setText(prf.getReferencias().toString());
+            total.setText(prf.getTotalpedido().toString());
+            cunatopaga.setText(prf.getCuantopagaecliente().toString());
+            vueltoc.setText(prf.getVuelto().toString());
         }
 
 
@@ -209,7 +259,7 @@ limpiar.setOnClickListener(new View.OnClickListener() {
             Double precvente = results.get(i).getPrecventarealm();
             int idproductorealm = results.get(i).getIdproductorealm();
             String comentariococina = results.get(i).getComentarioacocina();
- det = new DetallepedidoRealmFirebase(idd, 1, subtotal, idfirebase, cantidad, precvente, nombreproducto, "", Integer.parseInt(almacen), idproductorealm, comentariococina);
+ det = new DetallepedidoRealmFirebase(idd, 1, subtotal, idfirebase, cantidad, precvente, nombreproducto, "nohay", Integer.parseInt(almacen), idproductorealm, comentariococina);
 
 
             todoslosdetalles.add(det);
@@ -275,6 +325,11 @@ limpiar.setOnClickListener(new View.OnClickListener() {
                         pedido.where(CremaRealm.class)
                                 .equalTo("id", idd)
                                 .findAll();
+
+
+
+
+
                     CremaRealmFirebase dett = new CremaRealmFirebase(ic, resultso.get(ic).getNombrecrema().toString(), "1", 1, resultso.get(ic).getIdproducto());
                     FirebaseDatabase databaseec = FirebaseDatabase.getInstance();
                     DatabaseReference referenceec = databaseec.getReference(FPEDIDOS);
@@ -313,12 +368,12 @@ limpiar.setOnClickListener(new View.OnClickListener() {
 
     }
 
-    public void guardarestadodeunpedido() {
-        // SharedPreferences sharedPreferences = getSharedPreferences(FileName, Context.MODE_PRIVATE);
-        //SharedPreferences.Editor editor = sharedPreferences.edit();
-        //editor.putString("estadopedido", estadopedido)w;
+    public void guardarestadodeunpedido(String estadopedido) {
+         SharedPreferences sharedPreferences = getSharedPreferences(FileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("estadopedido", estadopedido);
 
-        //editor.commit();
+        editor.commit();
 
 
     }
@@ -387,6 +442,7 @@ int ido =Crudpedido.calculateIndex()-1;
     }
     private class grabarpedido extends AsyncTask<PedidoRealmFirebase, Void, String> {
         String resultado;
+        ProgressDialog pdLoading = new ProgressDialog(Enviarpedido.this);
         HttpURLConnection conne;
         URL url = null;
         PedidoRealmFirebase ped;
@@ -394,6 +450,10 @@ int ido =Crudpedido.calculateIndex()-1;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pdLoading.setMessage("\tCargando productos :)");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
 
 
         }
@@ -501,6 +561,8 @@ int ido =Crudpedido.calculateIndex()-1;
         }
         @Override
         protected void onPostExecute(String resultado) {
+            pdLoading.dismiss();
+
 
             super.onPostExecute(resultado);
 
@@ -841,6 +903,102 @@ int ido =Crudpedido.calculateIndex()-1;
 
 
         }
+    }
+
+
+    public void mostrartodo(){
+
+        Realm pedido = Realm.getDefaultInstance();
+        ArrayList<DetallepedidoRealmFirebase> todoslosdetalles = new ArrayList<>();
+
+
+        RealmResults<Detallepedidorealm> results =
+                pedido.where(Detallepedidorealm.class)
+                        .findAll();
+        int w = results.size();
+        DetallepedidoRealmFirebase det ;
+
+        for (int i = 0; i < w; i++) {
+            int cantidad = results.get(i).getCantidadrealm();
+            int idd = results.get(i).getId();
+            int idpedido = results.get(i).getIdpedido();
+            String nombreproducto = results.get(i).getNombreproductorealm();
+            String subtotal = results.get(i).getSubtotal();
+            Double precvente = results.get(i).getPrecventarealm();
+            int idproductorealm = results.get(i).getIdproductorealm();
+            String comentariococina = results.get(i).getComentarioacocina();
+            ArrayList<CremaRealmFirebase> todaslascremas = new ArrayList<>();
+
+
+
+            RealmResults<CremaRealm> resulcremaa =
+                    pedido.where(CremaRealm.class)
+                            .equalTo("id", results.get(i).getId())
+                            .findAll();
+
+            int lsrgaa = resulcremaa.size();
+
+            for (int ic = 0; ic < lsrgaa; ic++) {
+                RealmResults<CremaRealm> resultsoa =
+                        pedido.where(CremaRealm.class)
+                                .equalTo("id", results.get(i).getId())
+                                .findAll();
+                CremaRealmFirebase dett = new CremaRealmFirebase(ic, resultsoa.get(ic).getNombrecrema().toString(), "1", 1, idproductorealm);
+              todaslascremas.add(dett);
+            }
+
+int g=todaslascremas.size();
+            String fodat="";
+            String foda="";
+            for (int u=0;u<g;u++){
+                 foda=todaslascremas.get(u).getNombrecrema().toString();
+                 fodat=fodat+foda+"\r\n";
+
+
+
+            }
+////////////////////////////////////////////adicionales
+            ArrayList<AdicionalRealmFirebase> todoslosadicionalesa = new ArrayList<>();
+            RealmResults<AdicionalRealm> resulcremaad =
+                    pedido.where(AdicionalRealm.class)
+                            .equalTo("id", results.get(i).getId())
+                            .findAll();
+            int lsrgaad = resulcremaad.size();
+            for (int ica = 0; ica < lsrgaad; ica++) {
+                RealmResults<AdicionalRealm> resultsoad =
+                        pedido.where(AdicionalRealm.class)
+                                .equalTo("id", results.get(i).getId())
+                                .findAll();
+                AdicionalRealmFirebase dettd = new AdicionalRealmFirebase(ica,resultsoad.get(ica).getNombreadicional(),Double.parseDouble(resultsoad.get(ica).getPrecioadicional().toString()),resultsoad.get(ica).getEstadoadicional(),resultsoad.get(ica).getIdproducto(),resultsoad.get(ica).getId());
+                todoslosadicionalesa.add(dettd);
+            }
+
+            int ga=todoslosadicionalesa.size();
+            String fodata="";
+            String fodaa="";
+            for (int ua=0;ua<ga;ua++){
+                fodaa=todoslosadicionalesa.get(ua).getNombreadicional().toString();
+                fodata=fodata+fodaa+"\r\n";
+}
+
+            ///////////////////////////////////////////////////////
+            det = new DetallepedidoRealmFirebase(1,1  , subtotal, fodat, cantidad, precvente, nombreproducto, fodata, Integer.parseInt(almacen), idproductorealm, comentariococina);
+
+
+
+
+
+            todoslosdetalles.add(det);
+            RecyclerView.Adapter adapterventas = new Adaptadorparaverenviarpedidos(todoslosdetalles,this);
+
+            lista.setLayoutManager(new LinearLayoutManager(this));
+            lista.setAdapter(adapterventas);
+
+        }
+
+
+
+
     }
 }
 

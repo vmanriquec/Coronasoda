@@ -1,5 +1,6 @@
 package com.llamasoda.coronasoda;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -259,19 +260,23 @@ pidelo=(Button) findViewById(R.id.irafirebase);
 
 
     private class traerdescuentosycosodedelivery extends AsyncTask<String, String, String> {
-
+        ProgressDialog pdLoading = new ProgressDialog(Verpedidodos.this);
         HttpURLConnection conne;
         URL url = null;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            pdLoading.setMessage("\tCargando costos y descuentos disponibles");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
 
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(String... params)
+
+        {
 
             try {
                 url = new URL("https://sodapop.pe/sugest/apitraerdescuentosydelivery.php");
@@ -342,6 +347,7 @@ pidelo=(Button) findViewById(R.id.irafirebase);
         @Override
         protected void onPostExecute(String result) {
             Log.d("iooooo", result);
+            pdLoading.dismiss();
 
             JSONArray jArray = null;
             try {

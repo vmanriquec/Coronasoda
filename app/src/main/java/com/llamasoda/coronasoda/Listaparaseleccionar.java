@@ -1,6 +1,7 @@
 package com.llamasoda.coronasoda;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -201,10 +202,18 @@ public class Listaparaseleccionar extends AppCompatActivity {
         HttpURLConnection conne;
         URL url = null;
         ArrayList<Productos> listaalmaceno = new ArrayList<Productos>();
+        ProgressDialog pdLoading = new ProgressDialog(Listaparaseleccionar.this);
 
         @Override
         protected void onPreExecute() {
+
             super.onPreExecute();
+
+            pdLoading.setMessage("\tCargando productos :)");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
+
         }
 
         @Override
@@ -281,6 +290,7 @@ public class Listaparaseleccionar extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            pdLoading.dismiss();
             peopleproducto.clear();
             if (result.equals("no rows")) {
             } else {
@@ -299,6 +309,7 @@ public class Listaparaseleccionar extends AppCompatActivity {
                     Log.d("erroro",e.toString());
                 }
             }
+
         }
     }
 

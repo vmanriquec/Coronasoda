@@ -12,7 +12,6 @@
 
 
 
-
     <style name="TextLabelSNA" parent="Widget.Design.TextInputLayout">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/accent</item>

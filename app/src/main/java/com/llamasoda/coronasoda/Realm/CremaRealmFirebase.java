@@ -43,7 +43,8 @@ public class CremaRealmFirebase {
         this.idproducto = idproducto;
     }
 
-    public CremaRealmFirebase(int idcrema, String nombrecrema, String estadocrema, int id, int idproducto) {
+    public CremaRealmFirebase(
+            int idcrema, String nombrecrema, String estadocrema, int id, int idproducto) {
         this.idcrema = idcrema;
         this.nombrecrema = nombrecrema;
         this.estadocrema = estadocrema;

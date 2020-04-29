@@ -20,31 +20,34 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
-
         prefs = getApplication().getSharedPreferences(FileName, Context.MODE_PRIVATE);
 
-        String nombre=prefs.getString("nombreusuariof","");
+        String nombre = prefs.getString("nombreusuariof", "");
+        String estadopedido = prefs.getString("estadopedido", "");
 
-
-        if (nombre.equals("")){
+        if (nombre.equals("")) {
             YoYo.with(Techniques.Landing.getAnimator())
                     .duration(4700)
                     .repeat(2)
                     .playOn(findViewById(R.id.intro));
-            Intent i= new Intent(this,Nuevologin.class);
+            Intent i = new Intent(this, Nuevologin.class);
             startActivity(i);
 
+        } else {
+            if (estadopedido.equals("transito")) {
+
+                //Intent i = new Intent(this, Enviarpedido.class);
+                //startActivity(i);
+            } else {
+                Intent i = new Intent(this, Listaparaseleccionar.class);
+                startActivity(i);
+
+            }
+
+
         }
-        else{
-
-
-            Intent i= new Intent(this,Listaparaseleccionar.class);
-            startActivity(i);
-        }
-
 
 
     }
-
 
 }
